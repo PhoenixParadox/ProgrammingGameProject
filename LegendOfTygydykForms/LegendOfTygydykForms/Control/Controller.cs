@@ -77,6 +77,12 @@ namespace LegendOfTygydykForms.Control
         // Update
         public void InvokeGameTick(int dt) 
         {
+            if (world._pointsDelta >= 500) 
+            {
+                world._pointsDelta = 0;
+                world.AddRobot();
+            }
+
             //var temp = FreePoints();
             #region timers
             _spaceRegisterTimer += dt;
@@ -150,6 +156,7 @@ namespace LegendOfTygydykForms.Control
                 world.MouseSpawner.SpawnMouse();
                 world.MouseSpawner._timer = 0;
                 world.Points += 100;
+                world._pointsDelta += 100;
                 toDraw.Add(world.Mouse.sprite);
             }
             //else 
@@ -209,6 +216,7 @@ namespace LegendOfTygydykForms.Control
                 if (world.cat.State != CatState.Hidden && f.Frame.IntersectsWith(world.cat.Frame))
                 {
                     world.Points += f.Points;
+                    world._pointsDelta += f.Points;
                     toDraw.Remove(f.Sprite);
                     toRemove.Add(f);
                     continue;
@@ -257,6 +265,7 @@ namespace LegendOfTygydykForms.Control
 
         private void Update(Robot r, int dt) 
         {
+            if (!toDraw.Contains(r.sprite)) toDraw.Add(r.sprite);
             r.sprite.Update(dt);
             var delta = DirToDelta(r.Direction);
             delta.X *= r.speed;

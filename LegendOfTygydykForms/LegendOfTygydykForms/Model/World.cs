@@ -84,6 +84,8 @@ namespace LegendOfTygydykForms.Model
         public List<Goldfish> fishes;
 
         private int _points;
+        public int _pointsDelta;
+
         public int Points 
         {
             get { return _points; }
@@ -139,6 +141,11 @@ namespace LegendOfTygydykForms.Model
             dict["idle"] = new Animation(new[] { Assets.GoldCoin0, Assets.GoldCoin1 }, 0.3);
             spawners.Add(new FishSpawner(this, Assets.GoldCoin0, 10));
             #endregion
+        }
+
+        public void AddRobot() 
+        {
+            robots.Add(new Robot(new Sprite(VisualData._robotAnimations, Assets.robotUp) { Position = robotSpawn }));
         }
 
         public Point AbsPositionToRelaive(Point p) 

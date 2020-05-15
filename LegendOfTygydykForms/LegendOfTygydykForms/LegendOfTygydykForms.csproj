@@ -52,6 +52,7 @@
       <DependentUpon>Assets.resx</DependentUpon>
     </Compile>
     <Compile Include="Control\Controller.cs" />
+    <Compile Include="Control\DataManager.cs" />
     <Compile Include="Control\FishSpawner.cs" />
     <Compile Include="Control\MouseSpawner.cs" />
     <Compile Include="Form1.cs">

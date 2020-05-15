@@ -23,6 +23,9 @@ namespace LegendOfTygydykForms
 
     public class Game
     {
+        private DataManager _dataManager;
+        public GameData _gameData;
+
         private World _currentWorld;
         public World CurrentWorld 
         {
@@ -60,10 +63,15 @@ namespace LegendOfTygydykForms
             _currentWorld = new World(13, 64);
             controller = new Controller(_currentWorld, this);
             gameHUD = new HUD(this);
+
+            _gameData = new GameData();
+            _dataManager = new DataManager(this);
         }
 
         public void Restart() 
         {
+            if (_currentWorld.Points > _gameData.BestScore)
+                _gameData.BestScore = _currentWorld.Points;
             CurrentWorld = new World(13, 64);
             //controller = new Controller(_currentWorld, this);
         }
@@ -75,6 +83,7 @@ namespace LegendOfTygydykForms
 
         public void Close() 
         {
+            _dataManager.Save();
             form.Close();
         }
 
