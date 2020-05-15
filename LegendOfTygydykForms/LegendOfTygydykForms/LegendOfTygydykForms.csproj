@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{630FD12E-43F7-4AF5-8ADF-1BFF90FF89A1}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>LegendOfTygydykForms</RootNamespace>
+    <AssemblyName>LegendOfTygydykForms</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Assets.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Controller.cs" />
+    <Compile Include="Control\FishSpawner.cs" />
+    <Compile Include="Control\MouseSpawner.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Game.cs" />
+    <Compile Include="Model\Cat.cs" />
+    <Compile Include="Model\Geometry\Circle.cs" />
+    <Compile Include="Model\Couch.cs" />
+    <Compile Include="Model\Geometry\Line.cs" />
+    <Compile Include="Model\Goldfish.cs" />
+    <Compile Include="Model\Mouse.cs" />
+    <Compile Include="Model\Obstacle.cs" />
+    <Compile Include="Model\Robot.cs" />
+    <Compile Include="Model\Wall.cs" />
+    <Compile Include="Model\World.cs" />
+    <Compile Include="View\Animation.cs" />
+    <Compile Include="View\HUD.cs" />
+    <Compile Include="View\Sprite.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\VisualData.cs" />
+    <EmbeddedResource Include="Assets.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Assets.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GoldCoin0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FloorTile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\robotDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\robotLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\robotRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\robotUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\couchWithCat.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\emptyCouch.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_catMoveAnimation_f1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_catMoveAnimation_f2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_catMoveAnimation_f3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\catBack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\catFront.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BrickWall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GoldCoin1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BlinkingCat_f0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BlinkingCat_f1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CatSiluete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\esm_5_wickets_sound_fx_arcade_casino_kids_mobile_app.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\jessey_drake_synth_space_weird_synthy_sci_fi_sting_accent_snth_jd.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mouseDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mouseLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mouseRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mouseUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zapsplat_foley_wet_towel_squish_squelch_002_13836.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SquishedMouse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\music_zapsplat_tuff_enough.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="WMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

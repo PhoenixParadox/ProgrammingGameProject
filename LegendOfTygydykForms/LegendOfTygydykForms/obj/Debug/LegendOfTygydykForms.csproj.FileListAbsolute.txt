@@ -1,0 +1,12 @@
+D:\dev\programming project\LegendOfTygydykForms\LegendOfTygydykForms\bin\Debug\LegendOfTygydykForms.exe.config
+D:\dev\programming project\LegendOfTygydykForms\LegendOfTygydykForms\bin\Debug\LegendOfTygydykForms.exe
+D:\dev\programming project\LegendOfTygydykForms\LegendOfTygydykForms\bin\Debug\LegendOfTygydykForms.pdb
+D:\dev\programming project\LegendOfTygydykForms\LegendOfTygydykForms\obj\Debug\LegendOfTygydykForms.csprojAssemblyReference.cache
+D:\dev\programming project\LegendOfTygydykForms\LegendOfTygydykForms\obj\Debug\LegendOfTygydykForms.Properties.Resources.resources
+D:\dev\programming project\LegendOfTygydykForms\LegendOfTygydykForms\obj\Debug\LegendOfTygydykForms.csproj.GenerateResource.cache
+D:\dev\programming project\LegendOfTygydykForms\LegendOfTygydykForms\obj\Debug\LegendOfTygydykForms.exe
+D:\dev\programming project\LegendOfTygydykForms\LegendOfTygydykForms\obj\Debug\LegendOfTygydykForms.pdb
+D:\dev\programming project\LegendOfTygydykForms\LegendOfTygydykForms\obj\Debug\LegendOfTygydykForms.Form1.resources
+D:\dev\programming project\LegendOfTygydykForms\LegendOfTygydykForms\obj\Debug\LegendOfTygydykForms.Assets.resources
+D:\dev\programming project\LegendOfTygydykForms\LegendOfTygydykForms\obj\Debug\Interop.WMPLib.dll
+D:\dev\programming project\LegendOfTygydykForms\LegendOfTygydykForms\obj\Debug\LegendOfTygydykForms.csproj.ResolveComReference.cache
