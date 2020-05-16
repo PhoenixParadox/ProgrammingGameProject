@@ -404,7 +404,10 @@ namespace LegendOfTygydykForms.Control
             if (temp.Count == 0) return DeltaToDir(0, 0);
             //var p1 = world.trail.Where(t => t != rp).OrderBy(t => DistBetween(t, rp)).First();
             var p1 = temp.First();
-            var p2 = GetNighborhood(rp).OrderBy(p => DistBetween(p, p1)).First();
+            temp = GetNighborhood(rp).OrderBy(p => DistBetween(p, p1)).ToList();
+            //var p2 = GetNighborhood(rp).OrderBy(p => DistBetween(p, p1)).First();
+            if (temp.Count == 0) return DeltaToDir(0, 0);
+            var p2 = temp.First();
             return DeltaToDir(p2.X - rp.X, p2.Y - rp.Y);
         }
 
