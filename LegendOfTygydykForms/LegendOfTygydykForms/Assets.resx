@@ -154,8 +154,14 @@
   <data name="GoldCoin1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\GoldCoin1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="grumpyCatBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\grumpyCatBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="jessey_drake_synth_space_weird_synthy_sci_fi_sting_accent_snth_jd" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\jessey_drake_synth_space_weird_synthy_sci_fi_sting_accent_snth_jd.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="menuBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\menuBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="mouseDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\mouseDown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

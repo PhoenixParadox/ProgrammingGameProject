@@ -1,5 +1,5 @@
 ﻿using LegendOfTygydykForms.Model;
-using LegendOfTygydykForms.Model.Geometry;
+using LegendOfTygydykForms.Model.Moving;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -18,6 +18,7 @@ namespace LegendOfTygydykForms.Control
 
         private Game game;
         private Random rnd;
+        private bool isGameOver;
 
         #region timers
         private double _robotUpdateTimer; //ms
@@ -40,12 +41,13 @@ namespace LegendOfTygydykForms.Control
             world.MouseSpawner = new MouseSpawner(world, 4);
             world.MouseSpawner.SpawnMouse();
             rnd = new Random();
+            keyDown = default(Keys);
             _robotUpdateRate = 2;
             _robotChaseUpdateRate = 0.6;
             _mouseMovementRate = 0.5;
             _spaceRegisterRate = 0.2;
             _catInvincibilityLength = w.invincibilityLength;
-
+            isGameOver = false;
             toDraw = new List<Sprite>();
             toDraw.Add(world.Mouse.sprite);
             foreach (var r in world.robots)
@@ -62,8 +64,9 @@ namespace LegendOfTygydykForms.Control
             world.MouseSpawner = new MouseSpawner(world, 4);
             world.MouseSpawner.SpawnMouse();
             rnd = new Random();
+            keyDown = default(Keys);
             _catInvincibilityLength = w.invincibilityLength;
-
+            isGameOver = false;
             toDraw = new List<Sprite>();
             toDraw.Add(world.Mouse.sprite);
             foreach (var r in world.robots)
@@ -83,7 +86,6 @@ namespace LegendOfTygydykForms.Control
                 world.AddRobot();
             }
 
-            //var temp = FreePoints();
             #region timers
             _spaceRegisterTimer += dt;
             _robotUpdateTimer += dt;
@@ -134,6 +136,9 @@ namespace LegendOfTygydykForms.Control
                 case (Keys.R):
                     game.Restart();
                     break;
+                case (Keys.Q):
+                    game.GameOver();                    
+                    break;
                 case (default(Keys)):
                     world.cat.Direction = Dir.None;
                     break;
@@ -142,6 +147,10 @@ namespace LegendOfTygydykForms.Control
 
             if (world.cat.State != CatState.Hidden)
                 Update(world.cat, dt);
+            if (isGameOver) 
+            {
+                return;
+            }
             world.UpdateTrail();
 
             #region mouse
@@ -159,19 +168,7 @@ namespace LegendOfTygydykForms.Control
                 world._pointsDelta += 100;
                 toDraw.Add(world.Mouse.sprite);
             }
-            //else 
-            //{
-            //    if (MsToSec(world.MouseSpawner._timer) >= world.MouseSpawner._respawnRate) 
-            //    {
-            //        if (toDraw.Contains(world.Mouse.sprite))
-            //        {
-            //            toDraw.Remove(world.Mouse.sprite);
-            //        }
-            //        world.MouseSpawner.SpawnMouse();
-            //        world.MouseSpawner._timer = 0;
-            //        toDraw.Add(world.Mouse.sprite);
-            //    }
-            //}
+
             if (MsToSec(_mouseMovementTimer) >= _mouseMovementRate) 
             {
                 world.Mouse.Direction = (Dir)rnd.Next(0, 3);
@@ -233,7 +230,7 @@ namespace LegendOfTygydykForms.Control
             }
         }
 
-        public void Update(Cat c, int dt) 
+        private void Update(Cat c, int dt) 
         {
             if (MsToSec(_catInvincibilityTimer) >= _catInvincibilityLength) 
             {
@@ -248,56 +245,33 @@ namespace LegendOfTygydykForms.Control
 
             if (c.State != CatState.Invincible)
             {
-                if(IntersectsWithRobots(newFrame))
+                if(IntersectsWith(newFrame, withRobots: true))
                 {
                     Game.InvokeGotHit();
                     world.lives -= 1;
-                    if (world.lives == 0)
-                        game.Restart();
+                    if (world.lives == 0) 
+                    {
+                        game.GameOver();
+                        isGameOver = true;
+                        return;
+                    }
                     c.State = CatState.Invincible;
                 }
             }
-            if (IntersectsWithObstacles(newFrame))
+            if (IntersectsWith(newFrame, withCouch: true, withWalls: true))
                 return;
 
             c.UpdatePosition(new Point(newFrame.X + c.sprite.Offset.X, newFrame.Y + c.sprite.Offset.Y));
         }
 
-        private void Update(Robot r, int dt) 
-        {
-            if (!toDraw.Contains(r.sprite)) toDraw.Add(r.sprite);
-            r.sprite.Update(dt);
-            var delta = DirToDelta(r.Direction);
-            delta.X *= r.speed;
-            delta.Y *= r.speed;
-            var newFrame = new Rectangle(r.Frame.X + delta.X, r.Frame.Y + delta.Y, r.Frame.Width, r.Frame.Height);
-            foreach (var o in world.obstacles)
-            {
-                if (o.Frame.IntersectsWith(newFrame))
-                {
-                    return;
-                }
-            }
-            //foreach (var r1 in world.robots)
-            //{
-            //    if (r1 != r && r1.Frame.IntersectsWith(r.Frame))
-            //    {
-            //        newFrame.X -= 2 * delta.X;
-            //        newFrame.Y -= 2 * delta.Y;
-            //        break;
-            //    }
-            //}
-            r.UpdatePosition(new Point(newFrame.X + r.sprite.Offset.X, newFrame.Y + r.sprite.Offset.Y));
-        }
-
-        public void Update(Mouse m, int dt)
+        private void Update(Mouse m, int dt)
         {
             m.sprite.Update(dt);
             var delta = DirToDelta(m.Direction);
             delta.X *= m.speed;
             delta.Y *= m.speed;
             var newFrame = new Rectangle(m.Frame.X + delta.X, m.Frame.Y + delta.Y, m.Frame.Width, m.Frame.Height);
-            if (IntersectsWithRobots(m.Frame))
+            if (IntersectsWith(m.Frame, withRobots: true))
             {
                 toDraw.Remove(m.sprite);
                 world.MouseSpawner.SpawnMouse();
@@ -310,11 +284,11 @@ namespace LegendOfTygydykForms.Control
                 return;
             }
 
-            if (IntersectsWithWalls(newFrame))
+            if (IntersectsWith(newFrame, withWalls: true))
                 return;
 
             m.UpdatePosition(new Point(newFrame.X + m.sprite.Offset.X, newFrame.Y + m.sprite.Offset.Y));
-            if (IntersectsWithCouches(m.Frame))
+            if (IntersectsWith(m.Frame, withCouch: true))
             {
                 toDraw.Remove(m.sprite);
             }
@@ -322,6 +296,54 @@ namespace LegendOfTygydykForms.Control
             {
                 toDraw.Add(m.sprite);
             }
+        }
+
+        private void Update(Robot r, int dt) 
+        {
+            if (!toDraw.Contains(r.sprite)) toDraw.Add(r.sprite);
+            r.sprite.Update(dt);
+            var delta = DirToDelta(r.Direction);
+            delta.X *= r.speed;
+            delta.Y *= r.speed;
+            var newFrame = new Rectangle(r.Frame.X + delta.X, r.Frame.Y + delta.Y, r.Frame.Width, r.Frame.Height);
+            if (IntersectsWith(newFrame, withWalls: true, withCouch: true))
+                return;
+            r.UpdatePosition(new Point(newFrame.X + r.sprite.Offset.X, newFrame.Y + r.sprite.Offset.Y));
+        }
+        private Dir ChooseRobotDir(Robot r)
+        {
+            var rp = world.AbsPositionToRelaive(r.sprite.Position);
+            var temp = world.trail.Where(t => t != rp).OrderBy(t => DistBetween(t, rp)).ToList();
+            if (temp.Count == 0) return DeltaToDir(0, 0);
+            var p1 = temp.First();
+            temp = GetNighborhood(rp).OrderBy(p => DistBetween(p, p1)).ToList();
+            if (temp.Count == 0) return DeltaToDir(0, 0);
+            var p2 = temp.First();
+            return DeltaToDir(p2.X - rp.X, p2.Y - rp.Y);
+        }
+
+        private bool IntersectsWith(Rectangle frame, bool withWalls = false, bool withCouch = false, bool withRobots = false)
+        {
+            if (!(withWalls || withCouch || withRobots)) return false;
+            var list = new List<Rectangle>();
+            if (withWalls)
+            {
+                list = world.wallFrames;
+            }
+            if (withCouch)
+            {
+                list.AddRange(world.couchFrames);
+            }
+            if (withRobots)
+            {
+                list.AddRange(world.robotFrames);
+            }
+            foreach (var o in list.Where(o => o != frame))
+            {
+                if (o.IntersectsWith(frame))
+                    return true;
+            }
+            return false;
         }
 
         private Point DirToDelta(Dir d) 
@@ -356,59 +378,11 @@ namespace LegendOfTygydykForms.Control
             return ms / 1000.0;
         }
 
-        private bool IntersectsWithObstacles(Rectangle frame) 
-        {
-            foreach (var o in world.obstacles) 
-            {
-                if (frame.IntersectsWith(o.Frame)) return true;
-            }
-            return false;
-        }
-
-        private bool IntersectsWithWalls(Rectangle frame) 
-        {
-            foreach (var o in world.obstacles)
-            {
-                if ((o is Wall) && frame.IntersectsWith(o.Frame)) return true;
-            }
-            return false;
-        }
-        private bool IntersectsWithCouches(Rectangle frame)
-        {
-            foreach (var o in world.obstacles)
-            {
-                if ((o is Couch) && o.Frame.Contains(frame)) return true;
-            }
-            return false;
-        }
-        private bool IntersectsWithRobots(Rectangle frame)
-        {
-            foreach (var r in world.robots)
-            {
-                if (frame.IntersectsWith(r.Frame)) return true;
-            }
-            return false;
-        }
-
-        public static int DistBetween(Point p1, Point p2)
+        private static int DistBetween(Point p1, Point p2)
         {
             var dx = p1.X - p2.X;
             var dy = p1.Y - p2.Y;
             return (int)Math.Sqrt(dx * dx + dy * dy);
-        }
-
-        private Dir ChooseRobotDir(Robot r) 
-        {
-            var rp = world.AbsPositionToRelaive(r.sprite.Position);
-            var temp = world.trail.Where(t => t != rp).OrderBy(t => DistBetween(t, rp)).ToList();
-            if (temp.Count == 0) return DeltaToDir(0, 0);
-            //var p1 = world.trail.Where(t => t != rp).OrderBy(t => DistBetween(t, rp)).First();
-            var p1 = temp.First();
-            temp = GetNighborhood(rp).OrderBy(p => DistBetween(p, p1)).ToList();
-            //var p2 = GetNighborhood(rp).OrderBy(p => DistBetween(p, p1)).First();
-            if (temp.Count == 0) return DeltaToDir(0, 0);
-            var p2 = temp.First();
-            return DeltaToDir(p2.X - rp.X, p2.Y - rp.Y);
         }
 
         /// <summary>

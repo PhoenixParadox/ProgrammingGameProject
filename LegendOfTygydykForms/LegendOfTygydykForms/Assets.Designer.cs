@@ -210,11 +210,31 @@ namespace LegendOfTygydykForms {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap grumpyCatBackground {
+            get {
+                object obj = ResourceManager.GetObject("grumpyCatBackground", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream jessey_drake_synth_space_weird_synthy_sci_fi_sting_accent_snth_jd {
             get {
                 return ResourceManager.GetStream("jessey_drake_synth_space_weird_synthy_sci_fi_sting_accent_snth_jd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap menuBackground {
+            get {
+                object obj = ResourceManager.GetObject("menuBackground", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

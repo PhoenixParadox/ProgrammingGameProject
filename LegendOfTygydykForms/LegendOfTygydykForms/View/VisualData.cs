@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,9 @@ namespace LegendOfTygydykForms.View
         public static Dictionary<string, Animation> _catAnimations;
         public static Dictionary<string, Animation> _robotAnimations;
         public static Dictionary<string, Animation> _mouseAnimations;
+        public static Bitmap _tileTxtr = Assets.FloorTile;
+        public static Bitmap _wallTxtr = Assets.BrickWall;
+        public static Bitmap _menuBackground = Assets.menuBackground;
         public static Dictionary<string, Animation> _couchTextures 
         { 
             get

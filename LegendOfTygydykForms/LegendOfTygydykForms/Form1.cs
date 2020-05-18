@@ -17,9 +17,6 @@ namespace LegendOfTygydykForms
 {
     public partial class Form1 : Form
     {
-        private Bitmap _tileTxtr = Assets.FloorTile;
-        private Bitmap _wallTxtr = Assets.BrickWall;
-
         private Game game;
         private Timer timer;
 
@@ -31,13 +28,17 @@ namespace LegendOfTygydykForms
             Game.PointsIncreased += PlayPointsSound;
             Game.GotHit += PlayHitSound;
             Game.MouseSquished += PlaySquishSound;
-            //bgMusicPlayer.URL = "Resources/music_zapslat_tuff_enough.mp3";
-            //bgMusicPlayer.controls.stop();
-            //bgMusicPlayer.controls.play();
+            Game.GameStateChanged += AdjustWindowSize;
             timer = new Timer();
             timer.Interval = 15;
             timer.Enabled = true;
             timer.Tick += timer_Tick;
+            this.Size = game.DesiredWindowSize;
+        }
+
+        private void AdjustWindowSize()
+        {
+            this.Size = game.DesiredWindowSize;
         }
 
         private void PlaySquishSound()
@@ -57,49 +58,75 @@ namespace LegendOfTygydykForms
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            var str = " ";
-            //foreach (var k in game.CurrentWorld.jumpingPoints.Keys)
-            //    str += k;
-            foreach (var p in game.CurrentWorld.trail)
-                str += p.ToString();
-            Text = game.CurrentWorld.AbsPositionToRelaive(game.CurrentWorld.cat.Position).ToString() + str;
             Graphics g = e.Graphics;
-            DrawTiles(g);
-            foreach (var s in game.toDraw) 
+            switch (game.State) 
             {
-                DrawSprite(g, s);
+                case (GameState.Playing):
+                    var str = " ";
+                    //foreach (var k in game.CurrentWorld.jumpingPoints.Keys)
+                    //    str += k;
+                    foreach (var p in game.CurrentWorld.trail)
+                        str += p.ToString();
+                    Text = game.CurrentWorld.AbsPositionToRelaive(game.CurrentWorld.CatPosition).ToString() + str;                    
+                    DrawTiles(g);
+                    foreach (var s in game.toDraw)
+                    {
+                        DrawSprite(g, s);
+                    }                    
+                    break;
+                case (GameState.Menu):
+                    g.DrawImage(VisualData._menuBackground, new Point(0, 0));
+                    break;
             }
             game.gameHUD.DrawHUD(g);
         }
 
         private void DrawTiles(Graphics g) 
         {
-            var borderLength = game.CurrentWorld.mapSize;
-            var tileWidth = game.CurrentWorld.tileWidth;
+            var tileWidth = game._currentWorldTileSize;
+            var worldSize = game._worldSize;
 
-            DrawBorder(g, borderLength, tileWidth, true, 0);
-            DrawBorder(g, borderLength, tileWidth, true, borderLength);
-            DrawBorder(g, borderLength, tileWidth, false, 0);
-            DrawBorder(g, borderLength, tileWidth, false, borderLength);
+            DrawBorder(g, worldSize, tileWidth, true, 0);
+            DrawBorder(g, worldSize, tileWidth, true, worldSize.Height);
+            DrawBorder(g, worldSize, tileWidth, false, 0);
+            DrawBorder(g, worldSize, tileWidth, false, worldSize.Width);
 
-            for (int i = 1; i < game.CurrentWorld.mapSize; i++)
+            for (int i = 1; i < worldSize.Width; i++)
             {
-                for (int j = 1; j < game.CurrentWorld.mapSize; j++)
+                for (int j = 1; j < worldSize.Height; j++)
                 {
-                    g.DrawImage(_tileTxtr, new Rectangle(i * 64, j * 64, 64, 64));
+                    g.DrawImage(VisualData._tileTxtr, new Rectangle(i * 64, j * 64, 64, 64));
                 }
             }
         }
 
-        private void DrawBorder(Graphics g, int borderLength, int tileWidth, bool isHorizontal, int startInd) 
+        /// <summary>
+        /// Draws a set of vertical or horizontal tiles which represent world border.
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="worldSize"> Borders of given world. </param>
+        /// <param name="tileWidth"></param>
+        /// <param name="isHorizontal"> Type of a border. </param>
+        /// <param name="startInd"></param>
+        private void DrawBorder(Graphics g, Size worldSize, int tileWidth, bool isHorizontal, int startInd) 
         {
-            
-            for (int i = 0; i <= borderLength; i++) 
+            if (isHorizontal)
             {
-                var rect = (isHorizontal) ? (new Rectangle(i * tileWidth, startInd * tileWidth, tileWidth, tileWidth))
-                                          : (new Rectangle(startInd * tileWidth, i * tileWidth, tileWidth, tileWidth));
-                g.DrawImage(_wallTxtr, rect);
+                for (int i = 0; i <= worldSize.Width; i++)
+                {
+                    var rect = (new Rectangle(i * tileWidth, startInd * tileWidth, tileWidth, tileWidth));
+                    g.DrawImage(VisualData._wallTxtr, rect);
+                }
             }
+            else
+            {
+                for (int i = 0; i <= worldSize.Height; i++)
+                {
+                    var rect = new Rectangle(startInd * tileWidth, i * tileWidth, tileWidth, tileWidth);
+                    g.DrawImage(VisualData._wallTxtr, rect);
+                }
+            }
+
         }
 
         private void DrawSprite(Graphics g, Sprite s) 

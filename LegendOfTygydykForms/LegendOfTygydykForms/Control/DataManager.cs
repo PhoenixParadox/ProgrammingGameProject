@@ -6,12 +6,20 @@ using System.Threading.Tasks;
 
 namespace LegendOfTygydykForms.Control
 {
-
+    /// <summary>
+    /// Class representing game data which is shared between different game sessions.
+    /// </summary>
     public class GameData 
     {
-        public int BestScore;
+        public LedearboardEntry[] TopPlayers;
+        public int LedearboardIndex;
+        public int LedearboardLength = 5;
     }
-
+    public struct LedearboardEntry 
+    {
+        public int Score;
+        public string Name;
+    }
 
     /// <summary>
     /// Class for saving and loading data.
@@ -22,7 +30,7 @@ namespace LegendOfTygydykForms.Control
         private System.Xml.Serialization.XmlSerializer PlayerReader;
         private string PlayerSavePath;
         private System.IO.FileStream PlayerSaveFile;
-        private System.IO.StreamReader PlayerStreamReader;
+        //private System.IO.StreamReader PlayerStreamReader;
 
         private Game game;
 

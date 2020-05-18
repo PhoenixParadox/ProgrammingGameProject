@@ -22,3 +22,4 @@ D:\GitLocalRepositories\ProgrammingGameProject\LegendOfTygydykForms\LegendOfTygy
 D:\GitLocalRepositories\ProgrammingGameProject\LegendOfTygydykForms\LegendOfTygydykForms\obj\Debug\LegendOfTygydykForms.csproj.GenerateResource.cache
 D:\GitLocalRepositories\ProgrammingGameProject\LegendOfTygydykForms\LegendOfTygydykForms\obj\Debug\LegendOfTygydykForms.exe
 D:\GitLocalRepositories\ProgrammingGameProject\LegendOfTygydykForms\LegendOfTygydykForms\obj\Debug\LegendOfTygydykForms.pdb
+D:\GitLocalRepositories\ProgrammingGameProject\LegendOfTygydykForms\LegendOfTygydykForms\obj\Debug\LegendOfTygydykForms.Form2.resources

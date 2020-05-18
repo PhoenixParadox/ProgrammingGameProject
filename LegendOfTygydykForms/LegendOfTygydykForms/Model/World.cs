@@ -10,19 +10,15 @@ using System.Windows.Forms;
 
 namespace LegendOfTygydykForms.Model
 {
-    public enum Dir
-    {
-        Up,
-        Right,
-        Down,
-        Left,
-        None
-    }
+
 
     public class World
     {
-        public Cat cat;
-        private int _latestTrail;
+        private Point robotSpawn;
+        private int _points;
+        private Random rnd;
+        public Cat cat { get; private set; }
+        public Point CatPosition { get { return cat.Position; } }
         private int _trailLength;
         public Queue<Point> trail;
 
@@ -31,16 +27,21 @@ namespace LegendOfTygydykForms.Model
         public Queue<Sprite> SquishedMice;
 
         public List<Robot> robots;
-        public List<Point> robotPositions { get { return robots.Select(r => AbsPositionToRelaive(new Point(r.Frame.X, r.Frame.Y))).ToList(); } }
-        public int mapSize; // in tiles
-        public List<Point> mapPoints 
+        public List<Obstacle> obstacles;
+
+        #region points and frames collections
+
+        /// <summary>
+        /// All map points.
+        /// </summary>
+        public List<Point> mapPoints
         {
-            get 
+            get
             {
                 var res = new List<Point>();
-                for (int i = 1; i < mapSize; i++) 
+                for (int i = 1; i < worldSize.Width; i++)
                 {
-                    for (int j = 1; j < mapSize; j++) 
+                    for (int j = 1; j < worldSize.Height; j++)
                     {
                         res.Add(new Point(i, j));
                     }
@@ -48,42 +49,51 @@ namespace LegendOfTygydykForms.Model
                 return res;
             }
         }
-        public int tileWidth;
-        public Point robotSpawn;
-
+        /// <summary>
+        /// Points without obstacles and robots.
+        /// </summary>
         public List<Point> AccessiblePoints { get { return mapPoints.Except(robotPositions).Except(obstaclesPositions).ToList(); } }
-        public List<Obstacle> obstacles;
-        public List<Rectangle> obstaclesFrames { get { return obstacles.Where(o => o is Couch).Select(o => o.Frame).ToList(); } }
-        public List<Point> obstaclesPositions 
+        public List<Point> robotPositions { get { return robots.Select(r => AbsPositionToRelaive(new Point(r.Frame.X, r.Frame.Y))).ToList(); } }
+        public List<Point> obstaclesPositions
         {
-            get 
+            get
             {
                 var res = new List<Point>();
-                for (int i = tileWidth; i < mapSize * tileWidth; i += tileWidth)
+                for (int i = tileWidth; i < worldSize.Width * tileWidth; i += tileWidth)
                 {
-                    for (int j = tileWidth; j < mapSize * tileWidth; j += tileWidth)
+                    for (int j = tileWidth; j < worldSize.Height * tileWidth; j += tileWidth)
                     {
                         var r = new Rectangle(i, j, tileWidth, tileWidth);
                         var flag = false;
-                        foreach (var o in obstaclesFrames) 
+                        foreach (var o in couchFrames)
                         {
-                            if (o.IntersectsWith(r)) 
+                            if (o.IntersectsWith(r))
                             {
                                 flag = true;
                                 break;
                             }
                         }
-                        if(flag) res.Add(AbsPositionToRelaive(new Point(i, j)));
+                        if (flag) res.Add(AbsPositionToRelaive(new Point(i, j)));
                     }
                 }
                 return res;
             }
         }
+        public List<Rectangle> robotFrames { get { return robots.Select(r => r.Frame).ToList(); } }
+        public List<Rectangle> couchFrames { get { return obstacles.Where(o => o is Couch).Select(o => o.Frame).ToList(); } }
+        public List<Rectangle> wallFrames { get { return obstacles.Where(o => o is Wall).Select(o => o.Frame).ToList(); } }
+        public List<Rectangle> obstacleFrames { get { return obstacles.Select(o => o.Frame).ToList(); } }
+
+        #endregion
+
+        public Size worldSize { get; }
+        public int tileWidth { get; }        
+
         public Dictionary<Point, Couch> jumpingPoints;
         public List<FishSpawner> spawners;
         public List<Goldfish> fishes;
 
-        private int _points;
+
         public int _pointsDelta;
 
         public int Points 
@@ -91,27 +101,30 @@ namespace LegendOfTygydykForms.Model
             get { return _points; }
             set 
             {
-                _points = value;
+                _points = value;                
                 Game.InvokePointsIncreased();
             }
         }
         public int lives;
         public int invincibilityLength; //sec
 
-        public World(int ms, int mw) 
+        /// <summary>
+        /// Creates a new game world.
+        /// </summary>
+        /// <param name="mw"> Size of a tile. Tiles are squared. </param>
+        /// <param name="size"> Size of the room. </param>
+        public World(int mw, Size size) 
         {
-            mapSize = ms;
             tileWidth = mw;
-            robotSpawn = new Point(200, 200);
-            jumpingPoints = new Dictionary<Point, Couch>();
+            worldSize = size;
             lives = 5;
             invincibilityLength = 2;
-
+            jumpingPoints = new Dictionary<Point, Couch>();
+            rnd = new Random();
             SquishedMice = new Queue<Sprite>();
-
+            
             #region cat
             cat = new Cat(new Sprite(VisualData._catAnimations, Assets.catFront));
-            cat.sprite.Position = new Point(100, 100);
             trail = new Queue<Point>();
             _trailLength = 5;
             trail.Enqueue(new Point(cat.Position.X / tileWidth, cat.Position.Y / tileWidth));
@@ -119,21 +132,23 @@ namespace LegendOfTygydykForms.Model
 
             #region robots
             robots = new List<Robot>();
-            robots.Add(new Robot(new Sprite(VisualData._robotAnimations, Assets.robotUp) { Position = robotSpawn }));
-            //robots.Add(new Robot(new Sprite(VisualData._robotAnimations, Assets.robotUp) { Position = new Point(512, 128) }));
+            robots.Add(new Robot(new Sprite(VisualData._robotAnimations, Assets.robotUp)));
             #endregion
 
             #region obstacles
             obstacles = new List<Obstacle>();
-            obstacles.Add(new Couch(new Sprite(VisualData._couchTextures, Assets.emptyCouch), new Point(448, 320), ObstacleOrientation.FrontDown));
+            obstacles.Add(new Couch(new Sprite(VisualData._couchTextures, Assets.emptyCouch), RelativePositionToAbs(new Point(7, 4)), ObstacleOrientation.FrontDown));
             obstacles.Add(new Couch(new Sprite(VisualData._couchTextures, Assets.emptyCouch), RelativePositionToAbs(new Point(7, 9)), ObstacleOrientation.FrontUp));
-            obstacles.Add(new Wall(new Rectangle(0, 0, mapSize * tileWidth, tileWidth)));
-            obstacles.Add(new Wall(new Rectangle(0, 0, tileWidth, mapSize * tileWidth)));
-            obstacles.Add(new Wall(new Rectangle(mapSize * tileWidth, 0, tileWidth, mapSize * tileWidth)));
-            obstacles.Add(new Wall(new Rectangle(0, mapSize * tileWidth, mapSize * tileWidth, tileWidth)));
+            obstacles.Add(new Wall(new Rectangle(0, 0, worldSize.Width * tileWidth, tileWidth)));
+            obstacles.Add(new Wall(new Rectangle(0, 0, tileWidth, worldSize.Height * tileWidth)));
+            obstacles.Add(new Wall(new Rectangle(worldSize.Width * tileWidth, 0, tileWidth, worldSize.Height * tileWidth)));
+            obstacles.Add(new Wall(new Rectangle(0, worldSize.Height * tileWidth, worldSize.Width * tileWidth, tileWidth)));
             #endregion
             CreateJumpingPoints();
-
+            var temp = AccessiblePoints.Where(p => p.X != 1 && p.X != worldSize.Width - 1 && p.Y != 1 && p.Y != worldSize.Height - 1).ToList();
+            robotSpawn = RelativePositionToAbs(temp.ElementAt(rnd.Next(temp.Count - 1)));
+            robots[0].UpdatePosition(robotSpawn);
+            cat.UpdatePosition(RelativePositionToAbs(temp.ElementAt(rnd.Next(temp.Count - 1))));
             #region spawners
             fishes = new List<Goldfish>();
             spawners = new List<FishSpawner>();
@@ -175,7 +190,7 @@ namespace LegendOfTygydykForms.Model
                 {
                     var c = o as Couch;
                     var pos = new Point(c.Frame.X / tileWidth, c.Frame.Y / tileWidth);
-                    switch (c.orientation) 
+                    switch (c.Orientation) 
                     {
                         case (ObstacleOrientation.FrontDown):
                             jumpingPoints.Add(new Point(pos.X + 1, pos.Y + 2), c);
