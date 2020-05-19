@@ -15,6 +15,7 @@ namespace LegendOfTygydykForms.View
         private Point _bestScorePosition;
         private Point _ledearBoardPosition;
         private Point _titlePosition;
+        private Point _levelNamePosition;
         private Font hudFont;
         private Font menuFont;
 
@@ -25,6 +26,7 @@ namespace LegendOfTygydykForms.View
             _livesPosition = new Point(32, 16);
             _ledearBoardPosition = new Point(128, 128);
             _titlePosition = new Point(728, 128);
+            _levelNamePosition = new Point(_titlePosition.X + 30, _titlePosition.Y + 100);
             _currentGame = g;
             hudFont = new Font("Microsoft Sans", 16f);
             menuFont = new Font("Microsoft Sans", 24f);
@@ -51,7 +53,10 @@ namespace LegendOfTygydykForms.View
                 var pos = _ledearBoardPosition;
                 g.DrawString("Ledearboard:", menuFont, Brushes.White, new Point(pos.X - 60, pos.Y - 40));
                 g.DrawString("Press Enter to start", menuFont, Brushes.White, _titlePosition);
-                foreach (var d in _currentGame._gameData.TopPlayers.OrderByDescending(d => d.Score)) 
+                g.DrawString(_currentGame.CurrentWorldName, menuFont, Brushes.White, _levelNamePosition);
+                g.DrawString("<", menuFont, Brushes.White, new Point(_levelNamePosition.X - 60, _levelNamePosition.Y));
+                g.DrawString(">", menuFont, Brushes.White, new Point(_levelNamePosition.X + 260, _levelNamePosition.Y));
+                foreach (var d in _currentGame.CurrentTop.OrderByDescending(d => d.Score)) 
                 {
                     g.DrawString(d.Score.ToString(), menuFont, Brushes.White, new Point(pos.X - 90, pos.Y));
                     g.DrawString(":", menuFont, Brushes.White, pos);

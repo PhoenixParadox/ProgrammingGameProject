@@ -27,7 +27,7 @@ namespace LegendOfTygydykForms
             private set 
             {
                 _currentWorld = value;
-                controller.RestartWith(_currentWorld);
+                controller?.RestartWith(_currentWorld);
             }
         }
 
@@ -102,7 +102,8 @@ namespace LegendOfTygydykForms
             {
                 if (_state == GameState.Menu && value == GameState.Playing)
                 {
-                    CurrentWorld = new World(64, new Size(20, 10));
+                    //CurrentWorld = new World(64, new Size(20, 10));
+                    CurrentWorld = new World(Worlds[currentWorld]);
                 }
                 else if (_state == GameState.Playing && value == GameState.Loss) 
                 {
@@ -121,13 +122,106 @@ namespace LegendOfTygydykForms
         private Form2 dialogForm;
         private GameState _state;
 
+        public List<WorldConfig> Worlds;
+        private int curWrldInd;
+        public int currentWorld 
+        {
+            get
+            {
+                return curWrldInd;
+            }
+            set 
+            {
+                if (value != curWrldInd) 
+                {
+                    curWrldInd = value;
+                    CurrentWorld = new World(Worlds[curWrldInd]);
+                    if ( _gameData != null && _gameData.TopPlayers != null)
+                    {
+                        var maxInd = 0;
+                        for (int i = 0; i < _gameData.LedearboardLength; i++)
+                        {
+                            if (_gameData.TopPlayers[currentWorld][i].Score > _gameData.TopPlayers[currentWorld][maxInd].Score)
+                            {
+                                maxInd = i;
+                            }
+                        }
+                        BestScore = _gameData.TopPlayers[currentWorld][maxInd].Score;
+                    }
+                }
+            }
+        }
+        public string CurrentWorldName { get { return Worlds[currentWorld].Name; } }
+        public LedearboardEntry[] CurrentTop
+        {
+            get
+            {
+                if ( _gameData != null && _gameData.TopPlayers != null) 
+                {
+                    return _gameData.TopPlayers[currentWorld];
+                }
+                return new LedearboardEntry[0];
+            } 
+        }
+
         public Game(Form1 f) 
         {
+            Worlds = new List<WorldConfig>()
+            {
+                new WorldConfig()
+                { 
+                    Name = "\"BOX\"", 
+                    Size = new Size(15, 15),
+                    TileWidth = 64,
+                    Lives = 5,
+                    Couches = new List<ObstacleConfig> () 
+                    { 
+                        new ObstacleConfig { Position = new Point(8, 2), Orientation = ObstacleOrientation.FrontDown },
+                        new ObstacleConfig { Position = new Point(8, 14), Orientation = ObstacleOrientation.FrontUp },
+                        new ObstacleConfig { Position = new Point(2, 8), Orientation = ObstacleOrientation.FrontRight },
+                        new ObstacleConfig { Position = new Point(14, 8), Orientation = ObstacleOrientation.FrontLeft }
+                    }, 
+                    Walls = new List<ObstacleConfig>() 
+                },
+                new WorldConfig()
+                { 
+                    Name = "\"CORRIDOR\"",
+                    Size = new Size(20, 8), 
+                    TileWidth = 64,
+                    Lives = 5,
+                    Couches = new List<ObstacleConfig> ()
+                    { 
+                        new ObstacleConfig 
+                        { 
+                            Position = new Point(6, 4),
+                            Orientation = ObstacleOrientation.FrontDown
+                        },
+                        new ObstacleConfig
+                        { 
+                            Position = new Point(15, 4), 
+                            Orientation = ObstacleOrientation.FrontDown 
+                        } 
+                    }, 
+                    Walls = new List<ObstacleConfig>()
+                },
+                new WorldConfig()
+                {
+                    Name = "\"ARENA\"",
+                    Size = new Size(15, 15),
+                    TileWidth = 64,
+                    Lives = 3,
+                    Couches = new List<ObstacleConfig> (),
+                    Walls = new List<ObstacleConfig>()
+                }
+            };
+
             form = f;
             worlds = new World[2];
             State = GameState.Menu;
             VisualData.Load();
-            _currentWorld = new World(64, new Size(20, 10));
+            currentWorld = 1;
+            //_currentWorld = new World(64, new Size(20, 10));
+            _currentWorld = new World(Worlds[currentWorld]);
             controller = new Controller(_currentWorld, this);
             worlds[0] = _currentWorld;
             PlayerName = "";
@@ -135,17 +229,17 @@ namespace LegendOfTygydykForms
 
             _gameData = new GameData();
             _dataManager = new DataManager(this);
-            if (_gameData.TopPlayers != null) 
+            if (_gameData.TopPlayers != null)
             {
                 var maxInd = 0;
-                for (int i = 0; i < _gameData.LedearboardLength; i++) 
+                for (int i = 0; i < _gameData.LedearboardLength; i++)
                 {
-                    if (_gameData.TopPlayers[i].Score > _gameData.TopPlayers[maxInd].Score) 
+                    if (_gameData.TopPlayers[currentWorld][i].Score > _gameData.TopPlayers[currentWorld][maxInd].Score)
                     {
                         maxInd = i;
                     }
                 }
-                BestScore = _gameData.TopPlayers[maxInd].Score;
+                BestScore = _gameData.TopPlayers[currentWorld][maxInd].Score;
             }
 
             GameLost += ShowGameLostDialog;
@@ -166,16 +260,20 @@ namespace LegendOfTygydykForms
         {
             if (_gameData.TopPlayers == null) 
             {
-                _gameData.TopPlayers = new LedearboardEntry[5];
-                _gameData.TopPlayers[_gameData.LedearboardIndex] = new LedearboardEntry() { Name = PlayerName, Score = _points };
+                _gameData.TopPlayers = new LedearboardEntry[Worlds.Count][];
+                for (int i = 0; i < Worlds.Count; i++) 
+                {
+                    _gameData.TopPlayers[i] = new LedearboardEntry[5];
+                }
+                _gameData.TopPlayers[currentWorld][_gameData.LedearboardIndex] = new LedearboardEntry() { Name = PlayerName, Score = _points };
                 _gameData.LedearboardIndex++;
                 return;
             }
             for(int i = 0; i < _gameData.LedearboardLength; i++) 
             {
-                if (_gameData.TopPlayers[i].Name == PlayerName) 
+                if (_gameData.TopPlayers[currentWorld][i].Name == PlayerName) 
                 {
-                    _gameData.TopPlayers[i].Score = _points;
+                    _gameData.TopPlayers[currentWorld][i].Score = Math.Max(_points, _gameData.TopPlayers[currentWorld][i].Score);
                     return;
                 }
             }
@@ -184,16 +282,16 @@ namespace LegendOfTygydykForms
                 var minInd = 0;
                 for (int i = 0; i < _gameData.LedearboardLength; i++)
                 {
-                    if (_gameData.TopPlayers[i].Score <= _gameData.TopPlayers[minInd].Score)
+                    if (_gameData.TopPlayers[currentWorld][i].Score <= _gameData.TopPlayers[currentWorld][minInd].Score)
                     {
                         minInd = i;
                     }
                 }
-                _gameData.TopPlayers[minInd] = new LedearboardEntry() { Name = PlayerName, Score = _points };
+                _gameData.TopPlayers[currentWorld][minInd] = new LedearboardEntry() { Name = PlayerName, Score = _points };
             }
             else 
             {
-                _gameData.TopPlayers[_gameData.LedearboardIndex++] = new LedearboardEntry() { Name = PlayerName, Score = _points };
+                _gameData.TopPlayers[currentWorld][_gameData.LedearboardIndex++] = new LedearboardEntry() { Name = PlayerName, Score = _points };
             }
         }
         public void GameOver() 
@@ -207,7 +305,8 @@ namespace LegendOfTygydykForms
         }
         public void Restart() 
         {
-            CurrentWorld = new World(64, new Size(20, 10));
+            //CurrentWorld = new World(64, new Size(20, 10));
+            CurrentWorld = new World(Worlds[currentWorld]);
         }
         public void Update(int dt) 
         {
@@ -222,9 +321,19 @@ namespace LegendOfTygydykForms
                         keyDown = default(Keys);
                         State = GameState.Playing;
                     }
-                    else if (keyDown == Keys.Escape) 
+                    else if (keyDown == Keys.Escape)
                     {
                         Close();
+                    }
+                    else if (keyDown == Keys.Right)
+                    {
+                        currentWorld = (currentWorld + 1) % Worlds.Count;
+                        keyDown = default(Keys);
+                    }
+                    else if (keyDown == Keys.Left) 
+                    {
+                        currentWorld = (currentWorld == 0) ? currentWorld = Worlds.Count - 1 : currentWorld - 1;
+                        keyDown = default(Keys);
                     }
                     break;
             }

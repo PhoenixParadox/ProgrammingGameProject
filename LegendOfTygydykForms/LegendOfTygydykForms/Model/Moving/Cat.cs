@@ -70,7 +70,7 @@ namespace LegendOfTygydykForms.Model
         public Cat(Sprite s)
         {
             sprite = s;
-            speed = 5;
+            speed = 7;
             State = CatState.Idle;
         }
 

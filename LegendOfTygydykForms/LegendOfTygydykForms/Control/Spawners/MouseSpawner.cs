@@ -25,7 +25,6 @@ namespace LegendOfTygydykForms.Control
             var list = _currentWorld.AccessiblePoints.Except(_currentWorld.AccessiblePoints.Where(p => p.X == 1 || p.X == _currentWorld.worldSize.Width - 1 || p.Y == 1 || p.Y == _currentWorld.worldSize.Height - 1)).ToList();
             for (int i = 0; i < 4; i++) 
             {
-                //spawnPoints[i] = _currentWorld.RelativePositionToAbs(_currentWorld.AccessiblePoints[rnd.Next(0, _currentWorld.AccessiblePoints.Count)]);
                 spawnPoints[i] = _currentWorld.RelativePositionToAbs(list[rnd.Next(0, list.Count)]);
             }
             _respawnRate = respawnRate;

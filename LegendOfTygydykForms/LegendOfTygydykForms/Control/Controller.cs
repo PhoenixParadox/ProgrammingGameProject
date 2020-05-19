@@ -18,7 +18,20 @@ namespace LegendOfTygydykForms.Control
 
         private Game game;
         private Random rnd;
-        private bool isGameOver;
+        private bool _gameOver;
+        private bool isGameOver
+        {
+            get 
+            {
+                return _gameOver;
+            }
+            set 
+            {
+                if(value)
+                    game.GameOver();
+                _gameOver = value;
+            }
+        }
 
         #region timers
         private double _robotUpdateTimer; //ms
@@ -26,11 +39,11 @@ namespace LegendOfTygydykForms.Control
         private double _spaceRegisterTimer; //ms
         private double _catInvincibilityTimer; // ms
         private double _mouseMovementTimer;
-        private double _robotUpdateRate; //sec       
-        private double _robotChaseUpdateRate;//sec
-        private double _spaceRegisterRate; //sec
-        private double _catInvincibilityLength; // sec
-        private double _mouseMovementRate;
+        private const double _robotUpdateRate = 2; //sec       
+        private const double _robotChaseUpdateRate = 0.6;//sec
+        private const double _spaceRegisterRate = 0.2; //sec
+        private const double _catInvincibilityLength = 2; // sec
+        private const double _mouseMovementRate = 0.5;
         #endregion
 
 
@@ -42,11 +55,6 @@ namespace LegendOfTygydykForms.Control
             world.MouseSpawner.SpawnMouse();
             rnd = new Random();
             keyDown = default(Keys);
-            _robotUpdateRate = 2;
-            _robotChaseUpdateRate = 0.6;
-            _mouseMovementRate = 0.5;
-            _spaceRegisterRate = 0.2;
-            _catInvincibilityLength = w.invincibilityLength;
             isGameOver = false;
             toDraw = new List<Sprite>();
             toDraw.Add(world.Mouse.sprite);
@@ -65,7 +73,6 @@ namespace LegendOfTygydykForms.Control
             world.MouseSpawner.SpawnMouse();
             rnd = new Random();
             keyDown = default(Keys);
-            _catInvincibilityLength = w.invincibilityLength;
             isGameOver = false;
             toDraw = new List<Sprite>();
             toDraw.Add(world.Mouse.sprite);
@@ -86,18 +93,41 @@ namespace LegendOfTygydykForms.Control
                 world.AddRobot();
             }
 
+            UpdateTimers(dt);
+            UpdateKeys();
+
+            Update(world.cat, dt);
+            if (isGameOver) return;
+
+            UpdateMouse(dt);
+            UpdateRobots(dt);
+            UpdateSpawners(dt);
+            UpdateFishes(dt);
+
+            if (world.SquishedMice.Count > 5) 
+            {
+                toDraw.Remove(world.SquishedMice.Dequeue());
+            }
+        }
+
+        private void UpdateTimers(int dt) 
+        {
             #region timers
             _spaceRegisterTimer += dt;
             _robotUpdateTimer += dt;
             _robotChaseUpdateTimer += dt;
+            _mouseMovementTimer += dt;
+
             if (world.cat.State == CatState.Invincible)
             {
                 _catInvincibilityTimer += dt;
             }
             #endregion
-
+        }
+        private void UpdateKeys() 
+        {
             #region keys handle
-            switch (keyDown) 
+            switch (keyDown)
             {
                 case (Keys.Up):
                     world.cat.Direction = Dir.Up;
@@ -118,17 +148,17 @@ namespace LegendOfTygydykForms.Control
                         if (world.cat.State == CatState.Hidden)
                         {
                             world.cat.State = CatState.Idle;
-                            world.jumpingPoints[world.AbsPositionToRelaive(world.cat.Position)].HasCat = false;
+                            world.jumpingPoints[world.AbsPositionToRelative(world.cat.Position)].HasCat = false;
                             toDraw.Add(world.cat.sprite);
                         }
-                        else if (world.jumpingPoints.ContainsKey(world.AbsPositionToRelaive(world.cat.Position)))
+                        else if (world.jumpingPoints.ContainsKey(world.AbsPositionToRelative(world.cat.Position)))
                         {
-                            world.jumpingPoints[world.AbsPositionToRelaive(world.cat.Position)].HasCat = true;
+                            world.jumpingPoints[world.AbsPositionToRelative(world.cat.Position)].HasCat = true;
                             world.cat.State = CatState.Hidden;
                             toDraw.Remove(world.cat.sprite);
                         }
                     }
-                    
+
                     break;
                 case (Keys.Escape):
                     game.Close();
@@ -137,80 +167,73 @@ namespace LegendOfTygydykForms.Control
                     game.Restart();
                     break;
                 case (Keys.Q):
-                    game.GameOver();                    
+                    game.GameOver();
                     break;
                 case (default(Keys)):
                     world.cat.Direction = Dir.None;
                     break;
             }
             #endregion
-
-            if (world.cat.State != CatState.Hidden)
-                Update(world.cat, dt);
-            if (isGameOver) 
-            {
-                return;
-            }
-            world.UpdateTrail();
-
-            #region mouse
-            _mouseMovementTimer += dt;
-            world.MouseSpawner.Update(dt);
-            if (world.cat.State != CatState.Hidden && world.Mouse.Frame.IntersectsWith(world.cat.Frame))
-            {
-                if (toDraw.Contains(world.Mouse.sprite)) 
-                {
-                    toDraw.Remove(world.Mouse.sprite);
-                }
-                world.MouseSpawner.SpawnMouse();
-                world.MouseSpawner._timer = 0;
-                world.Points += 100;
-                world._pointsDelta += 100;
-                toDraw.Add(world.Mouse.sprite);
-            }
-
-            if (MsToSec(_mouseMovementTimer) >= _mouseMovementRate) 
-            {
-                world.Mouse.Direction = (Dir)rnd.Next(0, 3);
-                _mouseMovementTimer = 0;
-            }
-            Update(world.Mouse, dt);
-            #endregion
-
+        }
+        private void UpdateRobots(int dt) 
+        {
             #region robots
             var robotUpdateDirection = MsToSec(_robotUpdateTimer) >= _robotUpdateRate;
             if (robotUpdateDirection) _robotUpdateTimer = 0;
             var robotUpdateChase = MsToSec(_robotChaseUpdateTimer) >= _robotChaseUpdateRate;
             if (robotUpdateChase) _robotChaseUpdateTimer = 0;
 
-                foreach (var r in world.robots)
-                {
-                    if (world.cat.State == CatState.Idle && DistBetween(world.AbsPositionToRelaive(r.sprite.Position), world.AbsPositionToRelaive(world.cat.sprite.Position)) <= 5)
-                        r.State = RobotState.Chasing;
-                    else
-                        r.State = RobotState.Idle;
-                }
-
-            foreach (var r in world.robots) 
+            foreach (var r in world.robots)
             {
-                if (world.cat.State != CatState.Hidden &&  robotUpdateChase)
+                if (world.CatState == CatState.Idle && DistBetween(world.AbsPositionToRelative(r.Position), world.CatPosition) <= 5)
+                    r.State = RobotState.Chasing;
+                else
+                    r.State = RobotState.Idle;
+            }
+
+            foreach (var r in world.robots)
+            {
+                if (world.CatState != CatState.Hidden && robotUpdateChase)
                     r.Direction = ChooseRobotDir(r);
-                else if(robotUpdateDirection)
+                else if (robotUpdateDirection)
                 {
                     r.Direction = (Dir)rnd.Next(0, 3);
                 }
                 Update(r, dt);
             }
             #endregion
-
+        }
+        private void UpdateMouse(int dt) 
+        {
+            #region mouse
+            if (world.CatState != CatState.Hidden && world.Mouse.Frame.IntersectsWith(world.cat.Frame))
+            {
+                if (toDraw.Contains(world.Mouse.sprite))
+                {
+                    toDraw.Remove(world.Mouse.sprite);
+                }
+                world.MouseSpawner.SpawnMouse();
+                world.Points += 100;
+                world._pointsDelta += 100;
+                toDraw.Add(world.Mouse.sprite);
+            }
+            Update(world.Mouse, dt);
+            #endregion
+        }
+        private void UpdateSpawners(int dt) 
+        {
+            world.MouseSpawner.Update(dt);
             foreach (var spawner in world.spawners)
             {
                 spawner.Update(dt);
             }
+        }
+        private void UpdateFishes(int dt)
+        {
             var toRemove = new List<Goldfish>();
             foreach (var f in world.fishes)
             {
-                if (world.cat.State != CatState.Hidden && f.Frame.IntersectsWith(world.cat.Frame))
+                if (world.CatState != CatState.Hidden && f.Frame.IntersectsWith(world.CatFrame))
                 {
                     world.Points += f.Points;
                     world._pointsDelta += f.Points;
@@ -223,15 +246,11 @@ namespace LegendOfTygydykForms.Control
                 f.Sprite.Update(dt);
             }
             world.fishes.RemoveAll(f => toRemove.Contains(f));
-
-            if (world.SquishedMice.Count > 5) 
-            {
-                toDraw.Remove(world.SquishedMice.Dequeue());
-            }
         }
-
         private void Update(Cat c, int dt) 
         {
+            if (c.State == CatState.Hidden) return;
+
             if (MsToSec(_catInvincibilityTimer) >= _catInvincibilityLength) 
             {
                 c.State = CatState.Idle;
@@ -251,7 +270,6 @@ namespace LegendOfTygydykForms.Control
                     world.lives -= 1;
                     if (world.lives == 0) 
                     {
-                        game.GameOver();
                         isGameOver = true;
                         return;
                     }
@@ -262,10 +280,16 @@ namespace LegendOfTygydykForms.Control
                 return;
 
             c.UpdatePosition(new Point(newFrame.X + c.sprite.Offset.X, newFrame.Y + c.sprite.Offset.Y));
+            world.UpdateTrail();
         }
 
         private void Update(Mouse m, int dt)
         {
+            if (MsToSec(_mouseMovementTimer) >= _mouseMovementRate)
+            {
+                world.Mouse.Direction = (Dir)rnd.Next(0, 3);
+                _mouseMovementTimer = 0;
+            }
             m.sprite.Update(dt);
             var delta = DirToDelta(m.Direction);
             delta.X *= m.speed;
@@ -310,9 +334,10 @@ namespace LegendOfTygydykForms.Control
                 return;
             r.UpdatePosition(new Point(newFrame.X + r.sprite.Offset.X, newFrame.Y + r.sprite.Offset.Y));
         }
+
         private Dir ChooseRobotDir(Robot r)
         {
-            var rp = world.AbsPositionToRelaive(r.sprite.Position);
+            var rp = world.AbsPositionToRelative(r.sprite.Position);
             var temp = world.trail.Where(t => t != rp).OrderBy(t => DistBetween(t, rp)).ToList();
             if (temp.Count == 0) return DeltaToDir(0, 0);
             var p1 = temp.First();

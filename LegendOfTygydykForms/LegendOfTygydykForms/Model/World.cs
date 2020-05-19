@@ -18,7 +18,9 @@ namespace LegendOfTygydykForms.Model
         private int _points;
         private Random rnd;
         public Cat cat { get; private set; }
-        public Point CatPosition { get { return cat.Position; } }
+        public Point CatPosition { get { return AbsPositionToRelative(cat.Position); } }
+        public Rectangle CatFrame { get { return cat.Frame; } }
+        public CatState CatState { get { return cat.State; } }
         private int _trailLength;
         public Queue<Point> trail;
 
@@ -53,7 +55,7 @@ namespace LegendOfTygydykForms.Model
         /// Points without obstacles and robots.
         /// </summary>
         public List<Point> AccessiblePoints { get { return mapPoints.Except(robotPositions).Except(obstaclesPositions).ToList(); } }
-        public List<Point> robotPositions { get { return robots.Select(r => AbsPositionToRelaive(new Point(r.Frame.X, r.Frame.Y))).ToList(); } }
+        public List<Point> robotPositions { get { return robots.Select(r => AbsPositionToRelative(new Point(r.Frame.X, r.Frame.Y))).ToList(); } }
         public List<Point> obstaclesPositions
         {
             get
@@ -73,7 +75,7 @@ namespace LegendOfTygydykForms.Model
                                 break;
                             }
                         }
-                        if (flag) res.Add(AbsPositionToRelaive(new Point(i, j)));
+                        if (flag) res.Add(AbsPositionToRelative(new Point(i, j)));
                     }
                 }
                 return res;
@@ -106,7 +108,7 @@ namespace LegendOfTygydykForms.Model
             }
         }
         public int lives;
-        public int invincibilityLength; //sec
+        //public int invincibilityLength; //sec
 
         /// <summary>
         /// Creates a new game world.
@@ -118,7 +120,7 @@ namespace LegendOfTygydykForms.Model
             tileWidth = mw;
             worldSize = size;
             lives = 5;
-            invincibilityLength = 2;
+            //invincibilityLength = 2;
             jumpingPoints = new Dictionary<Point, Couch>();
             rnd = new Random();
             SquishedMice = new Queue<Sprite>();
@@ -158,12 +160,65 @@ namespace LegendOfTygydykForms.Model
             #endregion
         }
 
+        public World(WorldConfig config) 
+        {
+            worldSize = config.Size;
+            tileWidth = config.TileWidth;
+            lives = config.Lives;
+
+            jumpingPoints = new Dictionary<Point, Couch>();
+            rnd = new Random();
+            SquishedMice = new Queue<Sprite>();
+
+            #region cat
+            cat = new Cat(new Sprite(VisualData._catAnimations, Assets.catFront));
+            trail = new Queue<Point>();
+            _trailLength = 5;
+            trail.Enqueue(new Point(cat.Position.X / tileWidth, cat.Position.Y / tileWidth));
+            #endregion
+            #region robots
+            robots = new List<Robot>();
+            robots.Add(new Robot(new Sprite(VisualData._robotAnimations, Assets.robotUp)));
+            #endregion
+
+
+            #region obstacles
+            obstacles = new List<Obstacle>();
+            #region world bounds
+            obstacles.Add(new Wall(new Rectangle(0, 0, worldSize.Width * tileWidth, tileWidth)));
+            obstacles.Add(new Wall(new Rectangle(0, 0, tileWidth, worldSize.Height * tileWidth)));
+            obstacles.Add(new Wall(new Rectangle(worldSize.Width * tileWidth, 0, tileWidth, worldSize.Height * tileWidth)));
+            obstacles.Add(new Wall(new Rectangle(0, worldSize.Height * tileWidth, worldSize.Width * tileWidth, tileWidth)));
+            #endregion
+            foreach (var w in config.Walls) 
+            {
+                obstacles.Add(new Wall(w.Frame));
+            }
+            foreach (var c in config.Couches)
+            {
+                obstacles.Add(new Couch(new Sprite(VisualData._couchTextures, Assets.emptyCouch), RelativePositionToAbs(c.Position), c.Orientation));
+            }
+            #endregion
+            CreateJumpingPoints();
+            var temp = AccessiblePoints.Where(p => p.X != 1 && p.X != worldSize.Width - 1 && p.Y != 1 && p.Y != worldSize.Height - 1).ToList();
+            robotSpawn = RelativePositionToAbs(temp.ElementAt(rnd.Next(temp.Count - 1)));
+            robots[0].UpdatePosition(robotSpawn);
+            cat.UpdatePosition(RelativePositionToAbs(temp.ElementAt(rnd.Next(temp.Count - 1))));
+            #region spawners
+            fishes = new List<Goldfish>();
+            spawners = new List<FishSpawner>();
+            var dict = new Dictionary<string, Animation>();
+            dict["idle"] = new Animation(new[] { Assets.GoldCoin0, Assets.GoldCoin1 }, 0.3);
+            spawners.Add(new FishSpawner(this, Assets.GoldCoin0, 10));
+            #endregion
+        }
+
         public void AddRobot() 
         {
             robots.Add(new Robot(new Sprite(VisualData._robotAnimations, Assets.robotUp) { Position = robotSpawn }));
         }
 
-        public Point AbsPositionToRelaive(Point p) 
+        public Point AbsPositionToRelative(Point p) 
         {
             return new Point(p.X / tileWidth, p.Y / tileWidth);
         }
@@ -174,7 +229,7 @@ namespace LegendOfTygydykForms.Model
 
         public void UpdateTrail() 
         {
-            var curPos = AbsPositionToRelaive(cat.Position);
+            var curPos = AbsPositionToRelative(cat.Position);
             if (curPos != trail.Last()) 
             {
                 trail.Enqueue(curPos);

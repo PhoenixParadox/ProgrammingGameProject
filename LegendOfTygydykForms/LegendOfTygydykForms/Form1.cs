@@ -67,7 +67,7 @@ namespace LegendOfTygydykForms
                     //    str += k;
                     foreach (var p in game.CurrentWorld.trail)
                         str += p.ToString();
-                    Text = game.CurrentWorld.AbsPositionToRelaive(game.CurrentWorld.CatPosition).ToString() + str;                    
+                    Text = game.CurrentWorld.CatPosition.ToString() + str;                    
                     DrawTiles(g);
                     foreach (var s in game.toDraw)
                     {

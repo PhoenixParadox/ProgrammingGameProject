@@ -11,7 +11,7 @@ namespace LegendOfTygydykForms.Control
     /// </summary>
     public class GameData 
     {
-        public LedearboardEntry[] TopPlayers;
+        public LedearboardEntry[][] TopPlayers;
         public int LedearboardIndex;
         public int LedearboardLength = 5;
     }
@@ -48,8 +48,17 @@ namespace LegendOfTygydykForms.Control
             }
             else
             {
-                PlayerSaveFile = new System.IO.FileStream(PlayerSavePath, System.IO.FileMode.Open);
-                LoadFromSave();
+                try
+                {
+                    PlayerSaveFile = new System.IO.FileStream(PlayerSavePath, System.IO.FileMode.Open);
+                    LoadFromSave();
+                }
+                catch 
+                {
+                    PlayerSaveFile.Close();
+                    System.IO.File.Delete(PlayerSavePath);
+                    PlayerSaveFile = System.IO.File.Create(PlayerSavePath);                    
+                }
             }
         }
 
