@@ -108,7 +108,6 @@ namespace LegendOfTygydykForms.Model
             }
         }
         public int lives;
-        //public int invincibilityLength; //sec
 
         /// <summary>
         /// Creates a new game world.

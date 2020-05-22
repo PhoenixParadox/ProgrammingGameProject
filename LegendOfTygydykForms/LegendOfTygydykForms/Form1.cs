@@ -24,6 +24,7 @@ namespace LegendOfTygydykForms
         {
             InitializeComponent();
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
+            Text = "Legend Of Tygydyk";
             game = new Game(this);
             Game.PointsIncreased += PlayPointsSound;
             Game.GotHit += PlayHitSound;
@@ -61,13 +62,7 @@ namespace LegendOfTygydykForms
             Graphics g = e.Graphics;
             switch (game.State) 
             {
-                case (GameState.Playing):
-                    var str = " ";
-                    //foreach (var k in game.CurrentWorld.jumpingPoints.Keys)
-                    //    str += k;
-                    foreach (var p in game.CurrentWorld.trail)
-                        str += p.ToString();
-                    Text = game.CurrentWorld.CatPosition.ToString() + str;                    
+                case (GameState.Playing):                   
                     DrawTiles(g);
                     foreach (var s in game.toDraw)
                     {

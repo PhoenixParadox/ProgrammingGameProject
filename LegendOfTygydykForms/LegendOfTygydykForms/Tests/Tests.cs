@@ -54,6 +54,7 @@ namespace LegendOfTygydykForms.Tests
         [Test]
         public void CorrectObstaclesCount() 
         {
+            // extra 4 is accounted for walls
             var world = new World(testWorld1);
             Assert.AreEqual(world.obstacles.Count, 4);
             world = new World(testWorld2);
