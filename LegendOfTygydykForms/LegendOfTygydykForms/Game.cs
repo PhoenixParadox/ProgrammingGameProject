@@ -102,7 +102,6 @@ namespace LegendOfTygydykForms
             {
                 if (_state == GameState.Menu && value == GameState.Playing)
                 {
-                    //CurrentWorld = new World(64, new Size(20, 10));
                     CurrentWorld = new World(Worlds[currentWorld]);
                 }
                 else if (_state == GameState.Playing && value == GameState.Loss) 
@@ -277,7 +276,7 @@ namespace LegendOfTygydykForms
                     return;
                 }
             }
-            if (_gameData.LedearboardIndex == 5)
+            if (_gameData.LedearboardIndex == _gameData.LedearboardLength)
             {
                 var minInd = 0;
                 for (int i = 0; i < _gameData.LedearboardLength; i++)

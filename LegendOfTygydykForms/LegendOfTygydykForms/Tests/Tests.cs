@@ -50,7 +50,7 @@ namespace LegendOfTygydykForms.Tests
             var world = new World(testWorld1);
             Assert.AreEqual(world.mapPoints.Count, 16);
         }
-
+            
         [Test]
         public void CorrectObstaclesCount() 
         {

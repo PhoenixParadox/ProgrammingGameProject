@@ -10,8 +10,6 @@ using System.Windows.Forms;
 
 namespace LegendOfTygydykForms.Model
 {
-
-
     public class World
     {
         private Point robotSpawn;

@@ -158,7 +158,6 @@ namespace LegendOfTygydykForms.Control
                             toDraw.Remove(world.cat.sprite);
                         }
                     }
-
                     break;
                 case (Keys.Escape):
                     game.Close();

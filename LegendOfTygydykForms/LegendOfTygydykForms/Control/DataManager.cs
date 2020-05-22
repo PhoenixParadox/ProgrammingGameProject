@@ -30,7 +30,6 @@ namespace LegendOfTygydykForms.Control
         private System.Xml.Serialization.XmlSerializer PlayerReader;
         private string PlayerSavePath;
         private System.IO.FileStream PlayerSaveFile;
-        //private System.IO.StreamReader PlayerStreamReader;
 
         private Game game;
 
