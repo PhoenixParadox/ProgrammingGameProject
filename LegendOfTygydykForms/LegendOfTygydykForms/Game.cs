@@ -16,7 +16,8 @@ namespace LegendOfTygydykForms
         Playing,
         Loss,
         Menu,
-        Pause
+        Pause,
+        Shop
     }
 
     public class Game
@@ -120,7 +121,11 @@ namespace LegendOfTygydykForms
         private Keys _keyDown;
         private Form1 form;
         private Form2 dialogForm;
+        private Form3 shopForm;
         private GameState _state;
+        public ShopController _shopController;
+        private double _shopRegisterTimer;
+        private const double _shopRegisterRate = 0.2;
 
         public List<WorldConfig> Worlds;
         private int curWrldInd;
@@ -242,14 +247,12 @@ namespace LegendOfTygydykForms
             };
 
             form = f;
-            //worlds = new World[2];
             State = GameState.Menu;
             VisualData.Load();
             currentWorld = 1;
-            //_currentWorld = new World(64, new Size(20, 10));
             _currentWorld = new World(Worlds[currentWorld]);
             controller = new Controller(_currentWorld, this);
-            //worlds[0] = _currentWorld;
+            _shopController = new ShopController(this);
             PlayerName = "";
             gameHUD = new HUD(this, form);
 
@@ -272,8 +275,22 @@ namespace LegendOfTygydykForms
                 }
                 BestScore = _gameData.TopPlayers[currentWorld][maxInd].Score;
             }
+            if (_gameData.Items == null) 
+            {
+
+            }
 
             GameLost += ShowGameLostDialog;
+        }
+
+        public void VisitShop() 
+        {
+            shopForm = new Form3(this);
+            State = GameState.Shop;
+            //shopForm.game = this;
+            shopForm.FormClosed += ReturnToMenu;
+            shopForm.Focus();
+            shopForm.ShowDialog();
         }
         private void ShowGameLostDialog()
         {
@@ -345,6 +362,7 @@ namespace LegendOfTygydykForms
         }
         public void Update(int dt) 
         {
+            _shopRegisterTimer += dt;
             switch (State) 
             {
                 case (GameState.Pause):
@@ -366,10 +384,20 @@ namespace LegendOfTygydykForms
                         currentWorld = (currentWorld + 1) % Worlds.Count;
                         keyDown = default(Keys);
                     }
-                    else if (keyDown == Keys.Left) 
+                    else if (keyDown == Keys.Left)
                     {
                         currentWorld = (currentWorld == 0) ? currentWorld = Worlds.Count - 1 : currentWorld - 1;
                         keyDown = default(Keys);
+                    }
+                    else if (keyDown == Keys.S) 
+                    {
+                        keyDown = default(Keys);
+                        if (_shopRegisterTimer >= _shopRegisterRate) 
+                        {
+                            _shopRegisterTimer = 0;
+                            VisitShop();
+                        }
+                        break;
                     }
                     break;
             }

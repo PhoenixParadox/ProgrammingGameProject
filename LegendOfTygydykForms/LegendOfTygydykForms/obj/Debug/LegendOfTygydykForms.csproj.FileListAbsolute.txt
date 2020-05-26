@@ -32,3 +32,4 @@ D:\GitLocalRepositories\ProgrammingGameProject\LegendOfTygydykForms\LegendOfTygy
 D:\GitLocalRepositories\ProgrammingGameProject\LegendOfTygydykForms\LegendOfTygydykForms\bin\Debug\nunit.framework.xml
 D:\GitLocalRepositories\ProgrammingGameProject\LegendOfTygydykForms\LegendOfTygydykForms\obj\Debug\LegendOfTygydykForms.csproj.CopyComplete
 D:\GitLocalRepositories\ProgrammingGameProject\LegendOfTygydykForms\LegendOfTygydykForms\obj\Debug\LegendOfTygydykForms.csproj.CoreCompileInputs.cache
+D:\GitLocalRepositories\ProgrammingGameProject\LegendOfTygydykForms\LegendOfTygydykForms\obj\Debug\LegendOfTygydykForms.Form3.resources

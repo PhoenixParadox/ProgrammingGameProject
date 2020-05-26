@@ -69,10 +69,6 @@ namespace LegendOfTygydykForms.Control
                     toDraw.Add(o.Sprite);
                 }
             }
-
-            //    if (o is Couch)
-            //        toDraw.Add((o as Couch).sprite);
-            //toDraw.Add(world.cat.sprite);
         }
 
         public void RestartWith(World w) 
@@ -94,9 +90,6 @@ namespace LegendOfTygydykForms.Control
                     toDraw.Add(o.Sprite);
                 }
             }
-            //foreach (var o in world.obstacles)
-            //    if (o is Couch)
-            //        toDraw.Add((o as Couch).sprite);
             toDraw.Add(world.cat.sprite);
         }
 
@@ -285,6 +278,7 @@ namespace LegendOfTygydykForms.Control
                 {
                     world.Points += f.Points;
                     world._pointsDelta += f.Points;
+                    game._gameData.Fishes++;
                     toDraw.Remove(f.Sprite);
                     toRemove.Add(f);
                     continue;

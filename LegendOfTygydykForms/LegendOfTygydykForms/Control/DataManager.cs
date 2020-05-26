@@ -14,6 +14,11 @@ namespace LegendOfTygydykForms.Control
         public LedearboardEntry[][] TopPlayers;
         public int LedearboardIndex;
         public int LedearboardLength = 5;
+        public ShopItem[] Items;
+        public int NumberOfItems;
+        public int CurrentItem;
+        public int CurrentSprite;
+        public int Fishes;
     }
     public struct LedearboardEntry 
     {
@@ -44,6 +49,7 @@ namespace LegendOfTygydykForms.Control
             if (!System.IO.File.Exists(PlayerSavePath))
             {
                 PlayerSaveFile = System.IO.File.Create(PlayerSavePath);
+                LoadShopItems();
             }
             else
             {
@@ -56,9 +62,24 @@ namespace LegendOfTygydykForms.Control
                 {
                     PlayerSaveFile.Close();
                     System.IO.File.Delete(PlayerSavePath);
-                    PlayerSaveFile = System.IO.File.Create(PlayerSavePath);                    
+                    PlayerSaveFile = System.IO.File.Create(PlayerSavePath);
+                    LoadShopItems();
                 }
             }
+        }
+
+        private void LoadShopItems() 
+        {
+            game._gameData.Items = new ShopItem[]
+            {
+                new ShopItem {Name = "TYGYDYK", Description = "A Legendary hero.", Price = 0, IsAvailable = true, SpriteInd = 0 },
+                new ShopItem {Name = "PEACH", Description = "Orange is the new cat.", Price = 50, IsAvailable = false, SpriteInd = 1 },
+                new ShopItem {Name = "COAL", Description = "Back in black.", Price = 75, IsAvailable = false, SpriteInd = 2 },
+                new ShopItem {Name = "ALIEN", Description = "In space no one\n can hear you meow.", Price = 150, IsAvailable = false, SpriteInd = 3 },
+                new ShopItem {Name = "PIZZA-CAT", Description = "Now with a crispy crust.", Price = 300, IsAvailable = false, SpriteInd = 4 },
+                new ShopItem {Name = "TER-MEOW-NATOR", Description = "He'll be back.", Price = 500, IsAvailable = false, SpriteInd = 5 },
+            };
+            game._gameData.NumberOfItems = game._gameData.Items.Length;
         }
 
         private void LoadFromSave()

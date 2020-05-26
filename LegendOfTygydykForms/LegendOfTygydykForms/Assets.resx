@@ -118,11 +118,41 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="blackCat0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\blackCat0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blackCat1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\blackCat1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blackCat2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\blackCat2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blackCat3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\blackCat3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blackCatBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\blackCatBack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blinkingBlackCat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\blinkingBlackCat.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="BlinkingCat_f0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\BlinkingCat_f0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="BlinkingCat_f1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\BlinkingCat_f1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blinkingGreenCat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\blinkingGreenCat.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blinkingPeach" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\blinkingPeach.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blinkingPizzaCat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\blinkingPizzaCat.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blinkingRoboCat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\blinkingRoboCat.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="BrickWall" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\BrickWall.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -145,6 +175,9 @@
   <data name="esm_5_wickets_sound_fx_arcade_casino_kids_mobile_app" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\esm_5_wickets_sound_fx_arcade_casino_kids_mobile_app.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="fishIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\fishIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="FloorTile" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\FloorTile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -165,6 +198,21 @@
   </data>
   <data name="goldFish3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\goldFish3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="greenCat0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\greenCat0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="greenCat1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\greenCat1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="greenCat2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\greenCat2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="greenCat3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\greenCat3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="greenCatBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\greenCatBack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="grumpyCatBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\grumpyCatBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -195,6 +243,51 @@
   </data>
   <data name="pauseIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\pauseIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="peach0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\peach0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="peach1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\peach1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="peach2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\peach2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="peach3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\peach3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="peachBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\peachBack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pizzaCat0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\pizzaCat0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pizzaCat1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\pizzaCat1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pizzaCat2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\pizzaCat2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pizzaCat3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\pizzaCat3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pizzaCatBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\pizzaCatBack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="roboCat0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\roboCat0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="roboCat1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\roboCat1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="roboCat2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\roboCat2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="roboCat3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\roboCat3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="roboCatBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\roboCatBack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="robotDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\robotDown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

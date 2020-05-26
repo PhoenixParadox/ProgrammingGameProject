@@ -19,6 +19,8 @@ namespace LegendOfTygydykForms
     {
         private Game game;
         private Timer timer;
+        private Button shopButton;
+        private Button purchaseButton;
 
         public Form1()
         {
@@ -36,6 +38,11 @@ namespace LegendOfTygydykForms
             timer.Tick += timer_Tick;
             this.Size = game.DesiredWindowSize;
             pictureBox1.Location = new Point(this.Width - 128, 16);
+            //button1.Click += game.VisitShop;
+            shopButton = new Button();
+            shopButton.Text = "VISIT SHOP";
+            shopButton.BackgroundImage = Assets.menuBackground;
+
         }
 
         private void AdjustWindowSize()
