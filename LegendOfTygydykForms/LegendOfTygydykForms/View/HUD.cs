@@ -16,17 +16,20 @@ namespace LegendOfTygydykForms.View
         private Point _ledearBoardPosition;
         private Point _titlePosition;
         private Point _levelNamePosition;
+        private Point _pausePosition;
         private Font hudFont;
         private Font menuFont;
+        private Form1 Form;
 
-        public HUD(Game g) 
+        public HUD(Game g, Form1 form) 
         {
+            Form = form;
             _pointsPosition = new Point(468, 16);
             _bestScorePosition = new Point(268, 16);
             _livesPosition = new Point(32, 16);
             _ledearBoardPosition = new Point(128, 128);
             _titlePosition = new Point(728, 128);
-            _levelNamePosition = new Point(_titlePosition.X + 30, _titlePosition.Y + 100);
+            _levelNamePosition = new Point(_titlePosition.X + 30, _titlePosition.Y + 100);            
             _currentGame = g;
             hudFont = new Font("Microsoft Sans", 16f);
             menuFont = new Font("Microsoft Sans", 24f);
@@ -34,7 +37,7 @@ namespace LegendOfTygydykForms.View
 
         public void DrawHUD(Graphics g)
         {
-            if (_currentGame.State == GameState.Playing)
+            if (_currentGame.State == GameState.Playing || _currentGame.State == GameState.Pause)
             {
                 g.DrawString(_currentGame._points.ToString(), hudFont, Brushes.White, _pointsPosition);
                 g.DrawString("Best score: " + _currentGame.BestScore, hudFont, Brushes.White, _bestScorePosition);
@@ -46,6 +49,13 @@ namespace LegendOfTygydykForms.View
                         g.DrawImage(Assets.CatSiluete, pos);
                         pos.X += Assets.CatSiluete.Width;
                     }
+                }
+                if (_currentGame.State == GameState.Pause) 
+                {
+                    _pausePosition = new Point(_currentGame.DesiredWindowSize.Width / 2, _currentGame.DesiredWindowSize.Height / 2);
+                    _pausePosition.X -= Assets.pauseIcon.Width / 2;
+                    _pausePosition.Y -= Assets.pauseIcon.Height / 2;
+                    g.DrawImage(Assets.pauseIcon, _pausePosition);
                 }
             }
             else if (_currentGame.State == GameState.Menu) 

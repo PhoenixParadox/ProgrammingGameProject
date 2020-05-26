@@ -24,6 +24,7 @@ namespace LegendOfTygydykForms.Model
         /// Position of the center of the sprite.
         /// </summary>
         public Point Position;
+        public double Layer;
 
         public Rectangle Frame { get { return new Rectangle(CornerX, CornerY, Width, Height); } }
 
@@ -44,15 +45,24 @@ namespace LegendOfTygydykForms.Model
             }
         }
 
-        public Sprite(Bitmap b) 
+        public Sprite(Bitmap b, double layer = 0.0) 
         {
             texture = b;
+            Layer = layer;
         }
 
-        public Sprite(Dictionary<string, Animation> d, Bitmap b) 
+        public Sprite(Bitmap b, Point position, double layer = 0.0) 
+        {
+            texture = b;
+            Position = new Point(position.X + Offset.X, position.Y + Offset.Y);
+            Layer = layer;
+        }
+
+        public Sprite(Dictionary<string, Animation> d, Bitmap b, double layer = 0.0) 
         {
             animations = d;
             texture = b;
+            Layer = layer;
         }
 
         public void RotateSprite(SpriteRotate flip) 

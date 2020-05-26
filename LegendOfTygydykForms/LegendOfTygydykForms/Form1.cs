@@ -35,6 +35,7 @@ namespace LegendOfTygydykForms
             timer.Enabled = true;
             timer.Tick += timer_Tick;
             this.Size = game.DesiredWindowSize;
+            pictureBox1.Location = new Point(this.Width - 128, 16);
         }
 
         private void AdjustWindowSize()
@@ -62,21 +63,25 @@ namespace LegendOfTygydykForms
             Graphics g = e.Graphics;
             switch (game.State) 
             {
-                case (GameState.Playing):                   
+                case (GameState.Pause):
+                case (GameState.Playing):
+                    pictureBox1.Visible = false;
                     DrawTiles(g);
-                    foreach (var s in game.toDraw)
+                    foreach (var s in game.toDraw.OrderBy(td => td.Layer))
                     {
                         DrawSprite(g, s);
-                    }                    
+                    }
+                    DrawWalls(g);
                     break;
                 case (GameState.Menu):
+                    pictureBox1.Visible = true;
                     g.DrawImage(VisualData._menuBackground, new Point(0, 0));
                     break;
             }
             game.gameHUD.DrawHUD(g);
         }
 
-        private void DrawTiles(Graphics g) 
+        private void DrawWalls(Graphics g) 
         {
             var tileWidth = game._currentWorldTileSize;
             var worldSize = game._worldSize;
@@ -85,6 +90,17 @@ namespace LegendOfTygydykForms
             DrawBorder(g, worldSize, tileWidth, true, worldSize.Height);
             DrawBorder(g, worldSize, tileWidth, false, 0);
             DrawBorder(g, worldSize, tileWidth, false, worldSize.Width);
+        }
+
+        private void DrawTiles(Graphics g) 
+        {
+            var tileWidth = game._currentWorldTileSize;
+            var worldSize = game._worldSize;
+
+            //DrawBorder(g, worldSize, tileWidth, true, 0);
+            //DrawBorder(g, worldSize, tileWidth, true, worldSize.Height);
+            //DrawBorder(g, worldSize, tileWidth, false, 0);
+            //DrawBorder(g, worldSize, tileWidth, false, worldSize.Width);
 
             for (int i = 1; i < worldSize.Width; i++)
             {

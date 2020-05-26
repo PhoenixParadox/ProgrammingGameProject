@@ -224,6 +224,24 @@
   <ItemGroup>
     <None Include="Resources\grumpyCatBackground.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\goldFish0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\goldFish1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\goldFish2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\goldFish3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pauseIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\infoIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

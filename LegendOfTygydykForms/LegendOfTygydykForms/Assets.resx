@@ -154,8 +154,23 @@
   <data name="GoldCoin1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\GoldCoin1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="goldFish0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\goldFish0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="goldFish1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\goldFish1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="goldFish2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\goldFish2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="goldFish3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\goldFish3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="grumpyCatBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\grumpyCatBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="infoIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\infoIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="jessey_drake_synth_space_weird_synthy_sci_fi_sting_accent_snth_jd" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\jessey_drake_synth_space_weird_synthy_sci_fi_sting_accent_snth_jd.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -177,6 +192,9 @@
   </data>
   <data name="music_zapsplat_tuff_enough" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\music_zapsplat_tuff_enough.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="pauseIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\pauseIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="robotDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\robotDown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

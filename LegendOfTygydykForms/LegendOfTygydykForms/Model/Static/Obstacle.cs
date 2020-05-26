@@ -18,5 +18,6 @@ namespace LegendOfTygydykForms.Model
     {
         public Rectangle Frame;
         public ObstacleOrientation Orientation;
+        public abstract Sprite Sprite { get; set; }
     }
 }

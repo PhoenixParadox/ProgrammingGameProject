@@ -65,7 +65,7 @@ namespace LegendOfTygydykForms.Model
                     {
                         var r = new Rectangle(i, j, tileWidth, tileWidth);
                         var flag = false;
-                        foreach (var o in couchFrames)
+                        foreach (var o in obstacleFrames)
                         {
                             if (o.IntersectsWith(r))
                             {
@@ -153,7 +153,7 @@ namespace LegendOfTygydykForms.Model
             spawners = new List<FishSpawner>();
             var dict = new Dictionary<string, Animation>();
             dict["idle"] = new Animation(new[] { Assets.GoldCoin0, Assets.GoldCoin1 }, 0.3);
-            spawners.Add(new FishSpawner(this, Assets.GoldCoin0, 10));
+            spawners.Add(new FishSpawner(this, 10));
             #endregion
         }
 
@@ -168,14 +168,14 @@ namespace LegendOfTygydykForms.Model
             SquishedMice = new Queue<Sprite>();
 
             #region cat
-            cat = new Cat(new Sprite(VisualData._catAnimations, Assets.catFront));
+            cat = new Cat(new Sprite(VisualData._catAnimations, Assets.catFront, layer: 0.3));
             trail = new Queue<Point>();
             _trailLength = 5;
             trail.Enqueue(new Point(cat.Position.X / tileWidth, cat.Position.Y / tileWidth));
             #endregion
             #region robots
             robots = new List<Robot>();
-            robots.Add(new Robot(new Sprite(VisualData._robotAnimations, Assets.robotUp)));
+            robots.Add(new Robot(new Sprite(VisualData._robotAnimations, Assets.robotUp, layer: 0.4)));
             #endregion
 
 
@@ -189,30 +189,32 @@ namespace LegendOfTygydykForms.Model
             #endregion
             foreach (var w in config.Walls) 
             {
-                obstacles.Add(new Wall(w.Frame));
+                var pos = RelativePositionToAbs(w.Position);
+                obstacles.Add(new Wall(new Rectangle(pos.X, pos.Y, tileWidth, tileWidth), new Sprite(Assets.BrickWall, pos, layer: 0.6)));
+                //obstacles.Add(new Wall(w.Frame, new Sprite(Assets.BrickWall)));
             }
             foreach (var c in config.Couches)
             {
-                obstacles.Add(new Couch(new Sprite(VisualData._couchTextures, Assets.emptyCouch), RelativePositionToAbs(c.Position), c.Orientation));
+                obstacles.Add(new Couch(new Sprite(VisualData._couchTextures, Assets.emptyCouch, layer: 0.5), RelativePositionToAbs(c.Position), c.Orientation));
             }
             #endregion
             CreateJumpingPoints();
-            var temp = AccessiblePoints.Where(p => p.X != 1 && p.X != worldSize.Width - 1 && p.Y != 1 && p.Y != worldSize.Height - 1).ToList();
-            robotSpawn = RelativePositionToAbs(temp.ElementAt(rnd.Next(temp.Count - 1)));
+            var temp = AccessiblePoints.Select(ap => RelativePositionToAbs(ap)).Select(ap => new Point(ap.X + tileWidth / 2, ap.Y + tileWidth / 2)).ToList();
+            robotSpawn = temp.ElementAt(rnd.Next(temp.Count - 1));
             robots[0].UpdatePosition(robotSpawn);
-            cat.UpdatePosition(RelativePositionToAbs(temp.ElementAt(rnd.Next(temp.Count - 1))));
+            cat.UpdatePosition(temp.ElementAt(rnd.Next(temp.Count - 1)));
             #region spawners
             fishes = new List<Goldfish>();
             spawners = new List<FishSpawner>();
             var dict = new Dictionary<string, Animation>();
             dict["idle"] = new Animation(new[] { Assets.GoldCoin0, Assets.GoldCoin1 }, 0.3);
-            spawners.Add(new FishSpawner(this, Assets.GoldCoin0, 10));
+            spawners.Add(new FishSpawner(this, 10));
             #endregion
         }
 
         public void AddRobot() 
         {
-            robots.Add(new Robot(new Sprite(VisualData._robotAnimations, Assets.robotUp) { Position = robotSpawn }));
+            robots.Add(new Robot(new Sprite(VisualData._robotAnimations, Assets.robotUp, layer: 0.4) { Position = robotSpawn }));
         }
 
         public Point AbsPositionToRelative(Point p) 

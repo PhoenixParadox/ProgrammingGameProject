@@ -9,9 +9,15 @@ namespace LegendOfTygydykForms.Model
 {
     public class Wall : Obstacle
     {
+        public override Sprite Sprite { get; set; }
         public Wall(Rectangle frame) 
         {
             this.Frame = frame;
+        }
+        public Wall(Rectangle frame, Sprite sprite)
+        {
+            this.Frame = frame;
+            Sprite = sprite;
         }
     }
 }

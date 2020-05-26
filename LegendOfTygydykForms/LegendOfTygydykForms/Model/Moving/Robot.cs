@@ -27,8 +27,20 @@ namespace LegendOfTygydykForms.Model
                 _state = value;
             }
         }
+
+        #region exp
+        public Rectangle Frame { get { return new Rectangle(CornerX, CornerY, Width, Height); } }
+
+        // coordinates of upper left corner
+        private int CornerX { get { return Position.X - Offset.X; } }
+        private int CornerY { get { return Position.Y - Offset.Y; } }
+        public Point Offset { get { return new Point(Width / 2, Height / 2); } }
+        public int Width { get { return sprite.Width - (speed); } }
+        public int Height { get { return sprite.Height - (speed); } }
+        #endregion
+
         public Sprite sprite { get; }
-        public Rectangle Frame { get { return sprite.Frame; } }
+        //public Rectangle Frame { get { return sprite.Frame; } }
         public Point Position { get { return sprite.Position; } }
 
         private Dir _dir;
@@ -76,6 +88,11 @@ namespace LegendOfTygydykForms.Model
         public void UpdatePosition(Point pos)
         {
             sprite.Position = pos;
+        }
+        public void UpdatePosition(int dx, int dy) 
+        {
+            sprite.Position.X += dx;
+            sprite.Position.Y += dy;
         }
     }
 }

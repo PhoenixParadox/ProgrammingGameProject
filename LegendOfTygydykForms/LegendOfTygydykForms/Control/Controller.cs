@@ -39,11 +39,13 @@ namespace LegendOfTygydykForms.Control
         private double _spaceRegisterTimer; //ms
         private double _catInvincibilityTimer; // ms
         private double _mouseMovementTimer;
+        private double _pauseRegisterTimer;
         private const double _robotUpdateRate = 2; //sec       
         private const double _robotChaseUpdateRate = 0.6;//sec
         private const double _spaceRegisterRate = 0.2; //sec
         private const double _catInvincibilityLength = 2; // sec
         private const double _mouseMovementRate = 0.5;
+        private const double _pauseRegisterRate = 0.2;
         #endregion
 
 
@@ -61,9 +63,16 @@ namespace LegendOfTygydykForms.Control
             foreach (var r in world.robots)
                 toDraw.Add(r.sprite);
             foreach (var o in world.obstacles)
-                if (o is Couch)
-                    toDraw.Add((o as Couch).sprite);
-            toDraw.Add(world.cat.sprite);
+            {
+                if (o.Sprite != null) 
+                {
+                    toDraw.Add(o.Sprite);
+                }
+            }
+
+            //    if (o is Couch)
+            //        toDraw.Add((o as Couch).sprite);
+            //toDraw.Add(world.cat.sprite);
         }
 
         public void RestartWith(World w) 
@@ -79,14 +88,27 @@ namespace LegendOfTygydykForms.Control
             foreach (var r in world.robots)
                 toDraw.Add(r.sprite);
             foreach (var o in world.obstacles)
-                if (o is Couch)
-                    toDraw.Add((o as Couch).sprite);
+            {
+                if (o.Sprite != null)
+                {
+                    toDraw.Add(o.Sprite);
+                }
+            }
+            //foreach (var o in world.obstacles)
+            //    if (o is Couch)
+            //        toDraw.Add((o as Couch).sprite);
             toDraw.Add(world.cat.sprite);
         }
 
         // Update
         public void InvokeGameTick(int dt) 
         {
+            _pauseRegisterTimer += dt;
+            if (game.State == GameState.Pause) 
+            {
+                UpdateKeys();
+                return;
+            }
             if (world._pointsDelta >= 500) 
             {
                 world._pointsDelta = 0;
@@ -129,40 +151,67 @@ namespace LegendOfTygydykForms.Control
             #region keys handle
             switch (keyDown)
             {
+                case (Keys.P):
+                    if (MsToSec(_pauseRegisterTimer) >= _pauseRegisterRate) 
+                    {
+                        _pauseRegisterTimer = 0;
+                        if (game.State == GameState.Playing)
+                            game.Pause();
+                        else
+                            game.Unpause();
+                    }
+                    break;
                 case (Keys.Up):
-                    world.cat.Direction = Dir.Up;
+                    if (game.State != GameState.Pause) 
+                    {
+                        world.cat.Direction = Dir.Up;
+                    }
                     break;
                 case (Keys.Down):
-                    world.cat.Direction = Dir.Down;
+                    if (game.State != GameState.Pause) 
+                    {
+                        world.cat.Direction = Dir.Down;
+                    }
                     break;
                 case (Keys.Right):
-                    world.cat.Direction = Dir.Right;
+                    if (game.State != GameState.Pause) 
+                    {
+                        world.cat.Direction = Dir.Right;
+                    }
                     break;
                 case (Keys.Left):
-                    world.cat.Direction = Dir.Left;
+                    if (game.State != GameState.Pause) 
+                    {
+                        world.cat.Direction = Dir.Left;
+                    }
                     break;
                 case (Keys.Space):
-                    if (MsToSec(_spaceRegisterTimer) >= _spaceRegisterRate)
+                    if (game.State != GameState.Pause) 
                     {
-                        _spaceRegisterTimer = 0;
-                        if (world.cat.State == CatState.Hidden)
+                        if (MsToSec(_spaceRegisterTimer) >= _spaceRegisterRate)
                         {
-                            world.cat.State = CatState.Idle;
-                            world.jumpingPoints[world.AbsPositionToRelative(world.cat.Position)].HasCat = false;
-                            toDraw.Add(world.cat.sprite);
+                            _spaceRegisterTimer = 0;
+                            if (world.cat.State == CatState.Hidden)
+                            {
+                                world.cat.State = CatState.Idle;
+                                world.jumpingPoints[world.AbsPositionToRelative(world.cat.Position)].HasCat = false;
+                                toDraw.Add(world.cat.sprite);
+                            }
+                            else if (world.jumpingPoints.ContainsKey(world.AbsPositionToRelative(world.cat.Position)))
+                            {
+                                world.jumpingPoints[world.AbsPositionToRelative(world.cat.Position)].HasCat = true;
+                                world.cat.State = CatState.Hidden;
+                                toDraw.Remove(world.cat.sprite);
+                            }
                         }
-                        else if (world.jumpingPoints.ContainsKey(world.AbsPositionToRelative(world.cat.Position)))
-                        {
-                            world.jumpingPoints[world.AbsPositionToRelative(world.cat.Position)].HasCat = true;
-                            world.cat.State = CatState.Hidden;
-                            toDraw.Remove(world.cat.sprite);
-                        }
-                    }
+                    }                    
                     break;
                 case (Keys.Escape):
                     game.Close();
                     break;
                 case (Keys.R):
+                    if (game.State == GameState.Pause)
+                        game.Unpause();
                     game.Restart();
                     break;
                 case (Keys.Q):
@@ -278,7 +327,8 @@ namespace LegendOfTygydykForms.Control
             if (IntersectsWith(newFrame, withCouch: true, withWalls: true))
                 return;
 
-            c.UpdatePosition(new Point(newFrame.X + c.sprite.Offset.X, newFrame.Y + c.sprite.Offset.Y));
+            //c.UpdatePosition(new Point(newFrame.X + c.sprite.Offset.X, newFrame.Y + c.sprite.Offset.Y));
+            c.UpdatePosition(delta.X, delta.Y);
             world.UpdateTrail();
         }
 
@@ -300,7 +350,7 @@ namespace LegendOfTygydykForms.Control
                 world.MouseSpawner.SpawnMouse();
                 world.MouseSpawner._timer = 0;
                 toDraw.Add(world.Mouse.sprite);
-                var temp = new Sprite(Assets.SquishedMouse) { Position = m.Position };
+                var temp = new Sprite(Assets.SquishedMouse, layer: 0.2) { Position = m.Position };
                 toDraw.Add(temp);
                 world.SquishedMice.Enqueue(temp);
                 Game.InvokeMouseSquished();
@@ -331,7 +381,8 @@ namespace LegendOfTygydykForms.Control
             var newFrame = new Rectangle(r.Frame.X + delta.X, r.Frame.Y + delta.Y, r.Frame.Width, r.Frame.Height);
             if (IntersectsWith(newFrame, withWalls: true, withCouch: true))
                 return;
-            r.UpdatePosition(new Point(newFrame.X + r.sprite.Offset.X, newFrame.Y + r.sprite.Offset.Y));
+            //r.UpdatePosition(new Point(newFrame.X + r.sprite.Offset.X, newFrame.Y + r.sprite.Offset.Y));
+            r.UpdatePosition(delta.X, delta.Y);
         }
 
         private Dir ChooseRobotDir(Robot r)

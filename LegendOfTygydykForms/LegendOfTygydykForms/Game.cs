@@ -15,7 +15,8 @@ namespace LegendOfTygydykForms
     {
         Playing,
         Loss,
-        Menu
+        Menu,
+        Pause
     }
 
     public class Game
@@ -211,23 +212,54 @@ namespace LegendOfTygydykForms
                     Lives = 3,
                     Couches = new List<ObstacleConfig> (),
                     Walls = new List<ObstacleConfig>()
+                },
+                new WorldConfig()
+                {
+                    Name = "\"MAZE\"",
+                    Size = new Size(10, 10),
+                    TileWidth = 64,
+                    Lives = 4,
+                    Couches = new List<ObstacleConfig>(),
+                    Walls = new List<ObstacleConfig>()
+                    {
+                        new ObstacleConfig(){ Position = new Point(3, 3)},
+                        new ObstacleConfig(){ Position = new Point(3, 2)},
+                        new ObstacleConfig(){ Position = new Point(2, 3)},
+                        new ObstacleConfig(){ Position = new Point(2, 7)},
+                        new ObstacleConfig(){ Position = new Point(3, 7)},
+                        new ObstacleConfig(){ Position = new Point(2, 8)},
+                        new ObstacleConfig(){ Position = new Point(5, 5)},
+                        new ObstacleConfig(){ Position = new Point(5, 6)},
+                        new ObstacleConfig(){ Position = new Point(5, 7)},
+                        new ObstacleConfig(){ Position = new Point(5, 8)},
+                        new ObstacleConfig(){ Position = new Point(6, 5)},
+                        new ObstacleConfig(){ Position = new Point(7, 5)},
+                        new ObstacleConfig(){ Position = new Point(5, 3)},
+                        new ObstacleConfig(){ Position = new Point(6, 3)},
+                        new ObstacleConfig(){ Position = new Point(7, 3)}
+                    }
                 }
             };
 
             form = f;
-            worlds = new World[2];
+            //worlds = new World[2];
             State = GameState.Menu;
             VisualData.Load();
             currentWorld = 1;
             //_currentWorld = new World(64, new Size(20, 10));
             _currentWorld = new World(Worlds[currentWorld]);
             controller = new Controller(_currentWorld, this);
-            worlds[0] = _currentWorld;
+            //worlds[0] = _currentWorld;
             PlayerName = "";
-            gameHUD = new HUD(this);
+            gameHUD = new HUD(this, form);
 
             _gameData = new GameData();
             _dataManager = new DataManager(this);
+            if (_gameData.TopPlayers != null && _gameData.TopPlayers.GetLength(0) != Worlds.Count) 
+            {
+                _gameData.TopPlayers = null;
+                _gameData.LedearboardIndex = 0;
+            }
             if (_gameData.TopPlayers != null)
             {
                 var maxInd = 0;
@@ -263,6 +295,10 @@ namespace LegendOfTygydykForms
                 for (int i = 0; i < Worlds.Count; i++) 
                 {
                     _gameData.TopPlayers[i] = new LedearboardEntry[5];
+                }
+                if (_gameData.LedearboardIndex == _gameData.TopPlayers[currentWorld].Length) 
+                {
+                    _gameData.LedearboardIndex = 0;
                 }
                 _gameData.TopPlayers[currentWorld][_gameData.LedearboardIndex] = new LedearboardEntry() { Name = PlayerName, Score = _points };
                 _gameData.LedearboardIndex++;
@@ -311,6 +347,7 @@ namespace LegendOfTygydykForms
         {
             switch (State) 
             {
+                case (GameState.Pause):
                 case (GameState.Playing):
                         controller.InvokeGameTick(dt);
                         break;
@@ -336,6 +373,14 @@ namespace LegendOfTygydykForms
                     }
                     break;
             }
+        }
+        public void Pause() 
+        {
+            State = GameState.Pause;
+        }
+        public void Unpause() 
+        {
+            State = GameState.Playing;
         }
         public void Close() 
         {

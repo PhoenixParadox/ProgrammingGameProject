@@ -212,9 +212,59 @@ namespace LegendOfTygydykForms {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap goldFish0 {
+            get {
+                object obj = ResourceManager.GetObject("goldFish0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap goldFish1 {
+            get {
+                object obj = ResourceManager.GetObject("goldFish1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap goldFish2 {
+            get {
+                object obj = ResourceManager.GetObject("goldFish2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap goldFish3 {
+            get {
+                object obj = ResourceManager.GetObject("goldFish3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap grumpyCatBackground {
             get {
                 object obj = ResourceManager.GetObject("grumpyCatBackground", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap infoIcon {
+            get {
+                object obj = ResourceManager.GetObject("infoIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -284,6 +334,16 @@ namespace LegendOfTygydykForms {
         internal static System.IO.UnmanagedMemoryStream music_zapsplat_tuff_enough {
             get {
                 return ResourceManager.GetStream("music_zapsplat_tuff_enough", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pauseIcon {
+            get {
+                object obj = ResourceManager.GetObject("pauseIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
