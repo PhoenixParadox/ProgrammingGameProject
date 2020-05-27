@@ -93,6 +93,8 @@ namespace LegendOfTygydykForms.Model
         public List<FishSpawner> spawners;
         public List<Goldfish> fishes;
 
+        public Game game;
+
 
         public int _pointsDelta;
 
@@ -124,6 +126,7 @@ namespace LegendOfTygydykForms.Model
             
             #region cat
             cat = new Cat(new Sprite(VisualData._catAnimations, Assets.catFront));
+            //cat = new Cat()
             trail = new Queue<Point>();
             _trailLength = 5;
             trail.Enqueue(new Point(cat.Position.X / tileWidth, cat.Position.Y / tileWidth));
@@ -157,8 +160,9 @@ namespace LegendOfTygydykForms.Model
             #endregion
         }
 
-        public World(WorldConfig config) 
+        public World(WorldConfig config, Game g) 
         {
+            game = g;
             worldSize = config.Size;
             tileWidth = config.TileWidth;
             lives = config.Lives;
@@ -168,7 +172,8 @@ namespace LegendOfTygydykForms.Model
             SquishedMice = new Queue<Sprite>();
 
             #region cat
-            cat = new Cat(new Sprite(VisualData._catAnimations, Assets.catFront, layer: 0.3));
+            //cat = new Cat(new Sprite(VisualData._catAnimations, Assets.catFront, layer: 0.3));
+            cat = new Cat(VisualData.CatSprites[game._gameData.CurrentSprite]);
             trail = new Queue<Point>();
             _trailLength = 5;
             trail.Enqueue(new Point(cat.Position.X / tileWidth, cat.Position.Y / tileWidth));

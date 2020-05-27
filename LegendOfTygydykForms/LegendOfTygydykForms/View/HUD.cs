@@ -18,6 +18,7 @@ namespace LegendOfTygydykForms.View
         private Point _levelNamePosition;
         private Point _pausePosition;
         private Point _fishesPosition;
+        private Point _menuFishesPosition;
         private Font hudFont;
         private Font menuFont;
         private Form1 Form;
@@ -32,6 +33,7 @@ namespace LegendOfTygydykForms.View
             _titlePosition = new Point(728, 128);
             _levelNamePosition = new Point(_titlePosition.X + 30, _titlePosition.Y + 100);
             _fishesPosition = new Point(600, 16);
+            _menuFishesPosition = new Point(256, 512);
             _currentGame = g;
             hudFont = new Font("Microsoft Sans", 16f);
             menuFont = new Font("Microsoft Sans", 24f);
@@ -65,6 +67,10 @@ namespace LegendOfTygydykForms.View
             else if (_currentGame.State == GameState.Menu)
             {
                 var pos = _ledearBoardPosition;
+                g.DrawImage(Assets.fishIcon, _menuFishesPosition);
+                g.DrawString("YOU HAVE:", menuFont, Brushes.White, new Point(_menuFishesPosition.X - 200, _menuFishesPosition.Y));
+                g.DrawString("PRESS S TO VISIT SHOP", menuFont, Brushes.White, new Point(_menuFishesPosition.X - 200, _menuFishesPosition.Y + 64));
+                g.DrawString(_currentGame._gameData.Fishes.ToString(), menuFont, Brushes.White, new Point(_menuFishesPosition.X + 64, _menuFishesPosition.Y));
                 g.DrawString("Ledearboard:", menuFont, Brushes.White, new Point(pos.X - 60, pos.Y - 40));
                 g.DrawString("Press Enter to start", menuFont, Brushes.White, _titlePosition);
                 g.DrawString(_currentGame.CurrentWorldName, menuFont, Brushes.White, _levelNamePosition);

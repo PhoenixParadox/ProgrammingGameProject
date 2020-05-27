@@ -16,7 +16,6 @@ namespace LegendOfTygydykForms.Control
         public int SpriteInd;
     }
 
-
     public class ShopController
     {
         //public List<ShopItem> Items;
@@ -73,7 +72,11 @@ namespace LegendOfTygydykForms.Control
             }
             else 
             {
-
+                if (Game._gameData.Fishes >= ItemDisplayed.Price) 
+                {
+                    Game._gameData.Fishes -= ItemDisplayed.Price;
+                    ItemDisplayed.IsAvailable = true;
+                }
             }
         }
     }

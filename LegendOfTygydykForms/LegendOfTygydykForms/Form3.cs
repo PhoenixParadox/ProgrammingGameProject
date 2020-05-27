@@ -18,6 +18,7 @@ namespace LegendOfTygydykForms
         private Timer timer;
         private Font menuFont;
         private Point _spritePosition;
+        private Point _menuFishesPosition;
         public Form3(Game game)
         {
             InitializeComponent();
@@ -31,6 +32,7 @@ namespace LegendOfTygydykForms
             timer.Tick += Timer_Tick;
             menuFont = new Font("Microsoft Sans", 24f);
             _spritePosition = new Point(this.Width / 2, 128);
+            _menuFishesPosition = new Point(256, 32);
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -55,14 +57,21 @@ namespace LegendOfTygydykForms
         private void Form3_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            button1.Text = (game._shopController.ItemDisplayed.IsAvailable) ? "EQUIP" : "PURCHASE";
-            var spr = VisualData.CatSprites[game._gameData.CurrentItem];
+            button1.Text = (game._shopController.ItemDisplayed.IsAvailable) ? (game._gameData.CurrentItem == game._gameData.CurrentSprite) ? "EQUIPPED" : "EQUIP" : "PURCHASE";
+            var spr = VisualData.CatSprites[game._shopController.ItemDisplayed.SpriteInd];
             spr.Position = _spritePosition;
             DrawSprite(g, spr);
             g.DrawString(game._shopController.ItemDisplayed.Name, menuFont, Brushes.White, new Point(_spritePosition.X - 100, _spritePosition.Y + 64));
-            g.DrawString(game._shopController.ItemDisplayed.Description, menuFont, Brushes.White, new Point(_spritePosition.X - 100, _spritePosition.Y + 200));
-            //g.DrawString("<", menuFont, Brushes.White, new Point(_spritePosition.X - 100, _spritePosition.Y));
-            //g.DrawString(">", menuFont, Brushes.White, new Point(_spritePosition.X + 80, _spritePosition.Y));
+            g.DrawString(game._shopController.ItemDisplayed.Description, menuFont, Brushes.White, new Point(_spritePosition.X - 128, _spritePosition.Y + 200));
+            g.DrawImage(Assets.fishIcon, _menuFishesPosition);
+            g.DrawString("YOU HAVE:", menuFont, Brushes.White, new Point(_menuFishesPosition.X - 200, _menuFishesPosition.Y));
+            g.DrawString(game._gameData.Fishes.ToString(), menuFont, Brushes.White, new Point(_menuFishesPosition.X + 64, _menuFishesPosition.Y));
+
+            if (!game._shopController.ItemDisplayed.IsAvailable) 
+            {
+                g.DrawImage(Assets.fishIcon, new Point(button1.Location.X + 16, button1.Location.Y + 48));
+                g.DrawString(game._shopController.ItemDisplayed.Price.ToString(), menuFont, Brushes.White, new Point(button1.Location.X + 80, button1.Location.Y + 48));
+            }
         }
         private void DrawSprite(Graphics g, Sprite s)
         {

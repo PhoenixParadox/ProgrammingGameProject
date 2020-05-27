@@ -104,7 +104,7 @@ namespace LegendOfTygydykForms
             {
                 if (_state == GameState.Menu && value == GameState.Playing)
                 {
-                    CurrentWorld = new World(Worlds[currentWorld]);
+                    CurrentWorld = new World(Worlds[currentWorld], this);
                 }
                 else if (_state == GameState.Playing && value == GameState.Loss) 
                 {
@@ -140,7 +140,7 @@ namespace LegendOfTygydykForms
                 if (value != curWrldInd) 
                 {
                     curWrldInd = value;
-                    CurrentWorld = new World(Worlds[curWrldInd]);
+                    CurrentWorld = new World(Worlds[curWrldInd], this);
                     if ( _gameData != null && _gameData.TopPlayers != null)
                     {
                         var maxInd = 0;
@@ -174,39 +174,39 @@ namespace LegendOfTygydykForms
             Worlds = new List<WorldConfig>()
             {
                 new WorldConfig()
-                { 
-                    Name = "\"BOX\"", 
+                {
+                    Name = "\"BOX\"",
                     Size = new Size(15, 15),
                     TileWidth = 64,
                     Lives = 5,
-                    Couches = new List<ObstacleConfig> () 
-                    { 
+                    Couches = new List<ObstacleConfig> ()
+                    {
                         new ObstacleConfig { Position = new Point(8, 2), Orientation = ObstacleOrientation.FrontDown },
                         new ObstacleConfig { Position = new Point(8, 14), Orientation = ObstacleOrientation.FrontUp },
                         new ObstacleConfig { Position = new Point(2, 8), Orientation = ObstacleOrientation.FrontRight },
                         new ObstacleConfig { Position = new Point(14, 8), Orientation = ObstacleOrientation.FrontLeft }
-                    }, 
-                    Walls = new List<ObstacleConfig>() 
+                    },
+                    Walls = new List<ObstacleConfig>()
                 },
                 new WorldConfig()
-                { 
+                {
                     Name = "\"CORRIDOR\"",
-                    Size = new Size(20, 8), 
+                    Size = new Size(20, 8),
                     TileWidth = 64,
                     Lives = 5,
                     Couches = new List<ObstacleConfig> ()
-                    { 
-                        new ObstacleConfig 
-                        { 
+                    {
+                        new ObstacleConfig
+                        {
                             Position = new Point(6, 4),
                             Orientation = ObstacleOrientation.FrontDown
                         },
                         new ObstacleConfig
-                        { 
-                            Position = new Point(15, 4), 
-                            Orientation = ObstacleOrientation.FrontDown 
-                        } 
-                    }, 
+                        {
+                            Position = new Point(15, 4),
+                            Orientation = ObstacleOrientation.FrontDown
+                        }
+                    },
                     Walls = new List<ObstacleConfig>()
                 },
                 new WorldConfig()
@@ -246,19 +246,10 @@ namespace LegendOfTygydykForms
                 }
             };
 
-            form = f;
-            State = GameState.Menu;
-            VisualData.Load();
-            currentWorld = 1;
-            _currentWorld = new World(Worlds[currentWorld]);
-            controller = new Controller(_currentWorld, this);
-            _shopController = new ShopController(this);
-            PlayerName = "";
-            gameHUD = new HUD(this, form);
-
+            #region game data
             _gameData = new GameData();
             _dataManager = new DataManager(this);
-            if (_gameData.TopPlayers != null && _gameData.TopPlayers.GetLength(0) != Worlds.Count) 
+            if (_gameData.TopPlayers != null && _gameData.TopPlayers.GetLength(0) != Worlds.Count)
             {
                 _gameData.TopPlayers = null;
                 _gameData.LedearboardIndex = 0;
@@ -275,10 +266,20 @@ namespace LegendOfTygydykForms
                 }
                 BestScore = _gameData.TopPlayers[currentWorld][maxInd].Score;
             }
-            if (_gameData.Items == null) 
-            {
+            #endregion
 
-            }
+
+            form = f;
+            State = GameState.Menu;
+            VisualData.Load();
+            currentWorld = 1;
+            _currentWorld = new World(Worlds[currentWorld], this);
+            controller = new Controller(_currentWorld, this);
+            _shopController = new ShopController(this);
+            PlayerName = "";
+            gameHUD = new HUD(this, form);
+
+
 
             GameLost += ShowGameLostDialog;
         }
@@ -358,7 +359,7 @@ namespace LegendOfTygydykForms
         public void Restart() 
         {
             //CurrentWorld = new World(64, new Size(20, 10));
-            CurrentWorld = new World(Worlds[currentWorld]);
+            CurrentWorld = new World(Worlds[currentWorld], this);
         }
         public void Update(int dt) 
         {
