@@ -221,7 +221,7 @@ namespace LegendOfTygydykForms
                 new WorldConfig()
                 {
                     Name = "\"MAZE\"",
-                    Size = new Size(10, 10),
+                    Size = new Size(15, 10),
                     TileWidth = 64,
                     Lives = 4,
                     Couches = new List<ObstacleConfig>(),
@@ -238,10 +238,110 @@ namespace LegendOfTygydykForms
                         new ObstacleConfig(){ Position = new Point(5, 7)},
                         new ObstacleConfig(){ Position = new Point(5, 8)},
                         new ObstacleConfig(){ Position = new Point(6, 5)},
+                        new ObstacleConfig(){ Position = new Point(6, 1)},
                         new ObstacleConfig(){ Position = new Point(7, 5)},
+                        new ObstacleConfig(){ Position = new Point(8, 5)},
+                        new ObstacleConfig(){ Position = new Point(9, 5)},
+                        new ObstacleConfig(){ Position = new Point(10, 5)},
+                        new ObstacleConfig(){ Position = new Point(7, 8)},
+                        new ObstacleConfig(){ Position = new Point(8, 7)},
+                        new ObstacleConfig(){ Position = new Point(8, 8)},
+                        new ObstacleConfig(){ Position = new Point(9, 8)},
+                        new ObstacleConfig(){ Position = new Point(10, 8)},
                         new ObstacleConfig(){ Position = new Point(5, 3)},
                         new ObstacleConfig(){ Position = new Point(6, 3)},
-                        new ObstacleConfig(){ Position = new Point(7, 3)}
+                        new ObstacleConfig(){ Position = new Point(7, 3)},
+                        new ObstacleConfig(){ Position = new Point(12, 4)},
+                        new ObstacleConfig(){ Position = new Point(12, 1)},
+                        new ObstacleConfig(){ Position = new Point(12, 3)},
+                        new ObstacleConfig(){ Position = new Point(13, 9)},
+                        new ObstacleConfig(){ Position = new Point(13, 8)}
+                    }
+                },
+                new WorldConfig()
+                {
+                    Name = "\"TWO ROOMS\"",
+                    Size = new Size(13, 13),
+                    TileWidth = 64,
+                    Lives = 4,
+                    Couches = new List<ObstacleConfig>()
+                    {
+                        new ObstacleConfig
+                        {
+                            Position = new Point(2, 4),
+                            Orientation = ObstacleOrientation.FrontRight
+                        },
+                        new ObstacleConfig
+                        {
+                            Position = new Point(12, 10),
+                            Orientation = ObstacleOrientation.FrontLeft
+                        }
+                    },
+                    Walls = new List<ObstacleConfig>()
+                    {
+                        new ObstacleConfig(){ Position = new Point(6, 1)},
+                        new ObstacleConfig(){ Position = new Point(6, 2)},
+                        new ObstacleConfig(){ Position = new Point(6, 3)},
+                        new ObstacleConfig(){ Position = new Point(6, 4)},
+                        new ObstacleConfig(){ Position = new Point(6, 9)},
+                        new ObstacleConfig(){ Position = new Point(6, 10)},
+                        new ObstacleConfig(){ Position = new Point(6, 11)},
+                        new ObstacleConfig(){ Position = new Point(6, 12)},
+                        new ObstacleConfig(){ Position = new Point(7, 1)},
+                        new ObstacleConfig(){ Position = new Point(7, 2)},
+                        new ObstacleConfig(){ Position = new Point(7, 3)},
+                        new ObstacleConfig(){ Position = new Point(7, 4)},
+                        new ObstacleConfig(){ Position = new Point(7, 9)},
+                        new ObstacleConfig(){ Position = new Point(7, 10)},
+                        new ObstacleConfig(){ Position = new Point(7, 11)},
+                        new ObstacleConfig(){ Position = new Point(7, 12)}
+                    }
+                },
+                new WorldConfig()
+                {
+                    Name = "\"BOX IN A BOX\"",
+                    Size = new Size(16, 15),
+                    TileWidth = 64,
+                    Lives = 4,
+                    Couches = new List<ObstacleConfig>()
+                    {
+                        new ObstacleConfig
+                        {
+                            Position = new Point(6, 8),
+                            Orientation = ObstacleOrientation.FrontRight
+                        },
+                        new ObstacleConfig
+                        {
+                            Position = new Point(11, 8),
+                            Orientation = ObstacleOrientation.FrontLeft
+                        }
+                    },
+                    Walls = new List<ObstacleConfig>()
+                    {
+                        new ObstacleConfig(){ Position = new Point(4, 9)},
+                        new ObstacleConfig(){ Position = new Point(4, 10)},
+                        new ObstacleConfig(){ Position = new Point(4, 11)},
+                        new ObstacleConfig(){ Position = new Point(4, 8)},
+                        new ObstacleConfig(){ Position = new Point(4, 7)},
+                        new ObstacleConfig(){ Position = new Point(4, 6)},
+                        new ObstacleConfig(){ Position = new Point(4, 5)},
+                        new ObstacleConfig(){ Position = new Point(4, 4)},
+                        new ObstacleConfig(){ Position = new Point(5, 4)},
+                        new ObstacleConfig(){ Position = new Point(6, 4)},
+                        new ObstacleConfig(){ Position = new Point(10, 4)},
+                        new ObstacleConfig(){ Position = new Point(11, 4)},
+                        new ObstacleConfig(){ Position = new Point(12, 4)},
+                        new ObstacleConfig(){ Position = new Point(12, 5)},
+                        new ObstacleConfig(){ Position = new Point(12, 6)},
+                        new ObstacleConfig(){ Position = new Point(12, 7)},
+                        new ObstacleConfig(){ Position = new Point(12, 8)},
+                        new ObstacleConfig(){ Position = new Point(12, 9)},
+                        new ObstacleConfig(){ Position = new Point(12, 10)},
+                        new ObstacleConfig(){ Position = new Point(12, 11)},
+                        new ObstacleConfig(){ Position = new Point(5, 11)},
+                        new ObstacleConfig(){ Position = new Point(6, 11)},
+                        new ObstacleConfig(){ Position = new Point(10, 11)},
+                        new ObstacleConfig(){ Position = new Point(11, 11)}
                     }
                 }
             };

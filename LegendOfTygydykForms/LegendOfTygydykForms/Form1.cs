@@ -21,6 +21,7 @@ namespace LegendOfTygydykForms
         private Timer timer;
         private Button shopButton;
         private Button purchaseButton;
+        private Font menuFont;
 
         public Form1()
         {
@@ -42,6 +43,7 @@ namespace LegendOfTygydykForms
             shopButton = new Button();
             shopButton.Text = "VISIT SHOP";
             shopButton.BackgroundImage = Assets.menuBackground;
+            menuFont = new Font("Microsoft Sans", 24f);
 
         }
 
@@ -83,6 +85,7 @@ namespace LegendOfTygydykForms
                 case (GameState.Menu):
                     pictureBox1.Visible = true;
                     g.DrawImage(VisualData._menuBackground, new Point(0, 0));
+                    g.DrawString("Learn How To Play ->", menuFont, Brushes.White, new Point(pictureBox1.Location.X - 350, pictureBox1.Location.Y + 20));
                     break;
             }
             game.gameHUD.DrawHUD(g);
@@ -168,6 +171,11 @@ namespace LegendOfTygydykForms
         {
             if (game.keyDown == e.KeyCode)
                 game.keyDown = default(Keys);
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            (new Form4()).ShowDialog();
         }
     }
 }

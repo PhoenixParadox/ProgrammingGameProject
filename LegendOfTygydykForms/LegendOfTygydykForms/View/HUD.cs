@@ -32,7 +32,7 @@ namespace LegendOfTygydykForms.View
             _ledearBoardPosition = new Point(128, 128);
             _titlePosition = new Point(728, 128);
             _levelNamePosition = new Point(_titlePosition.X + 30, _titlePosition.Y + 100);
-            _fishesPosition = new Point(600, 16);
+            _fishesPosition = new Point(550, 16);
             _menuFishesPosition = new Point(256, 512);
             _currentGame = g;
             hudFont = new Font("Microsoft Sans", 16f);
@@ -73,6 +73,7 @@ namespace LegendOfTygydykForms.View
                 g.DrawString(_currentGame._gameData.Fishes.ToString(), menuFont, Brushes.White, new Point(_menuFishesPosition.X + 64, _menuFishesPosition.Y));
                 g.DrawString("Ledearboard:", menuFont, Brushes.White, new Point(pos.X - 60, pos.Y - 40));
                 g.DrawString("Press Enter to start", menuFont, Brushes.White, _titlePosition);
+                g.DrawString("Use arrows to choose level", menuFont, Brushes.White, new Point(_titlePosition.X - 60, _titlePosition.Y + 145));
                 g.DrawString(_currentGame.CurrentWorldName, menuFont, Brushes.White, _levelNamePosition);
                 g.DrawString("<", menuFont, Brushes.White, new Point(_levelNamePosition.X - 60, _levelNamePosition.Y));
                 g.DrawString(">", menuFont, Brushes.White, new Point(_levelNamePosition.X + 260, _levelNamePosition.Y));
